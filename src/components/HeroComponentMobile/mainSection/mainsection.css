@@ -1,0 +1,92 @@
+.timeline-head {
+    font-size: 17px;
+    color: #000000;
+}
+.main-wrapper-mobile{
+    margin: 0 10px;
+    height: 88vh;
+}
+.circle-icon-mobile{
+    border-radius: 50%;
+    width: 18vw;
+    background-color: #F0f0f0;
+}
+.timeline-icon-mobile{
+    width: 8vw;
+    right: 18px;
+    top: 26px;
+}
+.close-icon-mobile{
+    top: 7px;
+    right: 10px;
+    width: 5vw;
+}
+
+.timeline-input{
+    background: #FAFAFA;
+    padding: 8px;
+}
+  .main-modal-wrapper-mobile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    position: fixed;
+    background: hsla(0,0%,100%,.9);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    height: 100vh;
+}
+.modal-wrapper-mobile{
+    width: 85%;
+    border-radius: 4px;
+    border: 1px solid #DFDFDF;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 20px 75px rgba(0 0 0 /13%);
+}
+.ui.button.submit-btn-mobile{
+    font-weight: 300;
+    background: #3B5998;
+    color: #ffffff;
+    padding: 8px 32px;
+    font-size: 13px;
+    border-radius: 4px;
+    display: block;
+    color: white;
+    float: right;
+    margin-left: auto;
+    margin-right: 0;
+    margin-top: 10px;
+}
+.notice-text-mobile{
+    color: #000000;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.drafts-tab {
+    padding-bottom: 3%;
+    font-size: 13px;
+    font-weight: 500;
+    color: #3B5998;
+    cursor: pointer;
+    border-bottom: 1px solid #3B5998 ;
+}
+.sents-tab {
+    padding-bottom: 3%;
+    cursor: pointer;
+    color: #666666;
+    font-size: 13px;
+    font-weight: 500;
+}
+.timeline-area{
+    height: 55vh;
+}
+.divider-bar{
+    color: #DFDFDF;
+    font-size: 20px;
+}
