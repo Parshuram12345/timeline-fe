@@ -1,0 +1,79 @@
+.innertimeline-wrapper{
+    margin: 0 20px;
+    width: 80%;
+}
+.savedata-button{
+    width: fit-content;
+    color: #3B5998;
+    border: 1px solid #3B5998;
+    background-color: #ffffff;
+    padding: 5px 20px;
+  }
+  .submitdata-button{
+    width: fit-content;
+    color: white;
+    padding: 7px 40px;
+  }
+.items-tab {
+    padding-bottom: 3%;
+    font-size: 14px;
+    font-weight: 500;
+    color: #3B5998;
+    cursor: pointer;
+    border-bottom: 1px solid #3B5998 ;
+}
+.ghantt-tab {
+    padding-bottom: 3%;
+    cursor: pointer;
+    color: #666666;
+    font-size: 14px;
+    font-weight: 500;
+}
+.draft-share-btn-wrapper{
+    /* margin-left: 73%;
+    width: 100%; */
+}
+.add-item{
+    width: 5vw;
+}
+.search-icon{
+    width: 1vw;
+}
+.items-wrapper{
+    padding: 10px 30px;
+}
+.down-arrow-icon{
+    right: 32px; 
+    top: 8px;
+    
+}
+.down-arrow-date-icon{
+    right: 32px; 
+    top: 10px;
+}
+.width-3{
+    width: 3%;
+}
+.hash-icon{
+    width: 1vw;
+}
+.padding-3{
+    padding: 3px;
+}
+.right-20{
+    right: 20px;
+}
+.top-8{
+    top: 8px;
+}
+.item-container{
+    border-bottom: 1px solid #DFDFDF;
+    /* border: 1px solid #DFDFDF; */
+    padding: 3px;
+}
+.add-more-item{
+    width: 6vw;
+}
+.margin-top-10{
+    margin-top: 10px;
+}

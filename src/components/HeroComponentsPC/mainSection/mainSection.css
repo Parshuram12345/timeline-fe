@@ -119,6 +119,9 @@ input:focus {
 .width-6{
     width: 6%;
 }
+.width-3{
+    width: 3%;
+}
 .width-15{
     width: 15%;
 }
@@ -128,5 +131,13 @@ input:focus {
 .timeline-content-wrapper{
     width: 86%;
     padding: 10px;
-
+}
+.status-container{
+     background-color: #FAFAFA;
+     color: #444444;
+     border-radius: 4px;
+     padding: 5px;
+}
+.divider-margin-8{
+    margin: 8px 0px;
 }

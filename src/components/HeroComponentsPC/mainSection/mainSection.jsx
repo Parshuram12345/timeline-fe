@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {FiChevronRight,FiEdit2 } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 import { HiOutlineShare } from "react-icons/hi";
 import { AiOutlineDelete} from "react-icons/ai";
-import { FaRegEdit } from "react-icons/fa";
+// import { FaRegEdit } from "react-icons/fa";
 import { Dropdown } from "react-bootstrap";
 import "./mainSection.css";
 import {data} from "../../../utils"
@@ -13,8 +14,14 @@ function MainSection() {
   const [draftsflag, setDraftsflag] = useState(false);
   const [sentflag, setSentflag] = useState(false);
   const [timelineName,setTimelineName]=useState("")
+  const navigate = useNavigate();
   const {AccessToken,BaseUrl,projectid}=data;
   const dummayarr = Array.from({length:2})
+
+  ///---go to InnerPage of Timeline----///
+  const goToInnerTimeline=()=>{
+    navigate("/innertimeline")
+  }
   ///---create timeline ----///
   const handleCreateTimeline = (value) => {
     setOpenTimelineModal(value);
@@ -132,8 +139,8 @@ useEffect(()=>{
           {dummayarr && dummayarr.map((_,index)=>{
             return(
               <>
-            <div  key={index} className="d-flex justify-between border-radius-4 border-df">
-            <div className="timeline-content-wrapper d-flex justify-flex-start">
+            <div  key={index} className="d-flex align-center justify-between border-radius-4 border-df divider-margin-8">
+            <div className="timeline-content-wrapper d-flex justify-flex-start cursor-pointer" onClick={goToInnerTimeline}>
               <div className="width-6">
                 <img className="" src={"/Images/colortimeline.svg"}  alt="three-vector"/>
               </div>
@@ -141,15 +148,16 @@ useEffect(()=>{
             <div className="width-19">{index+28} Sep 2022</div>
             <div className="width-25">{index+30} Sep 2022</div>
             <div className="width-24">{index+1} Nov 2022</div>
-            <div className="width-15">Yet to start</div>
+            <div className="status-container width-15">Yet to start</div>
             </div>
-            <div>
+            
+            <div className="width-3">
                 <Dropdown>  
                           <Dropdown.Toggle
                             as="button"
                             style={{
                               border: "none",
-                              backgroundColor: "#ECEFF5",
+                              backgroundColor: "#ffffff",
                             }}
                           >
                             <img

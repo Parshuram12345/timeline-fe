@@ -18,7 +18,7 @@
 .side-navbar{
     top: 10vh;
     height: 90vh;
-    width:20%
+    width:18%
 }
 .rightside-section{
         width: 80%;
@@ -33,6 +33,12 @@
 }
 .bg-color-fa{
     background-color: #FAFAFA;
+}
+.bg-color-ff{
+    background-color: #FFFFFF;
+}
+.bg-color{
+    background-color: #3B5998;
 }
 .border-df{
     border: 1px solid #DFDFDF;
@@ -73,14 +79,32 @@
 .width-18{
     width:18%
 }
+.width-12{
+    width:12%
+}
 .width-13{
     width:13%
+}
+.width-14{
+    width:14%
 }
 .width-15{
     width:15%
 }
+.width-20{
+    width:20%
+}
 .width-27{
     width:27%
+}
+.width-80{
+    width:80%
+}
+.width-88{
+    width:88%
+}
+.width-90{
+    width:90%
 }
 .width-100{
     width:100%
@@ -103,6 +127,9 @@
 
 .padding-5{
     padding: 5px;
+}
+.padding-10{
+    padding: 10px;
 }
 .d-flex{
     display: flex;
@@ -194,4 +221,10 @@ input:focus {
 textarea:focus { 
     outline: none !important;
     border-color: #3B5998 !important;
+}
+.color-text-444444{
+    color: #444444;
+}
+.cursor-pointer{
+    cursor: pointer;
 }
