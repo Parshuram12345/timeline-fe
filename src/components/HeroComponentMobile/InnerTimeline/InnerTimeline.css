@@ -1,0 +1,101 @@
+.items-tab {
+    padding-bottom: 3%;
+    font-size: 13px;
+    font-weight: 500;
+    color: #3B5998;
+    cursor: pointer;
+    border-bottom: 1px solid #3B5998 ;
+}
+.ghantt-tab {
+    padding-bottom: 3%;
+    cursor: pointer;
+    color: #666666;
+    font-size: 13px;
+    font-weight: 500;
+}
+.timeline-area{
+    height: 70vh;
+}
+.divider-bar{
+    color: #DFDFDF;
+    font-size: 20px;
+}
+.yet-to-start{
+    background-color: #F0F0F0;
+    padding: 0 5px;
+}
+.margin-top-15{
+    margin-top: 15px;
+}
+.timeline-height-62{
+    height: 62vh;
+}
+.submitbtn{
+    width: 42%;
+    color: #ffffff;
+    padding: 8px 30px;
+    font-size: 15px;
+    border: 2px solid #3B5998;
+  }
+.save-draft-btn{
+    color: #3B5998;
+    font-size: 15px;
+    background-color: #ffffff;
+    padding: 5px 25px;
+    border: 2px solid #3B5998;
+}
+.main-modal-add-item-mobile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    position: fixed;
+    background: hsla(0,0%,100%,.9);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    height: 100vh;
+}
+.modal-wrapper-mobile{
+    width: 100%;
+    height: 100vh;
+    padding: 0%;
+    /* border-radius: 4px; */
+    /* border: 1px solid #DFDFDF; */
+    /* padding: 20px; */
+    background-color: white;
+    /* box-shadow: 0 20px 75px rgba(0 0 0 /13%); */
+}
+.close-icon-addItem{
+    right: 10px;
+    top: 5px;
+}
+.add-item-container{
+    margin-left: 38px;
+    margin-top: 30px;
+}
+.ui.button.submit-btn-additem{
+    font-weight: 300;
+    background: #3B5998;
+    color: #ffffff;
+    padding: 8px 32px;
+    font-size: 13px;
+    border-radius: 4px;
+}
+.content.main-content{
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    justify-content: space-around;
+    padding: 10px;
+}
+.down-arrow{
+    background: white;
+    right: 5px;
+    top: 40px;
+}
+.margin-bottom-5{
+    margin-bottom: 5px;
+}

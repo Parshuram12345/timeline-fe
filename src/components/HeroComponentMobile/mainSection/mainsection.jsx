@@ -67,7 +67,8 @@ function Mainsection() {
         </div>
       </div>
       <div style={{ marginTop: "0%" }} className="ui divider"></div>
-      <div className="timeline-area d-flex-col align-center justify-center font-weight-500 m-auto">
+      <div className="timeline-area d-flex-col align-center justify-center 
+      font-weight-500 m-auto border-df border-radius-4">
         <div className="position-relative">
           <img
             className="circle-icon-mobile"
@@ -81,11 +82,11 @@ function Mainsection() {
           />
         </div>
 
-        <div className="color-text-888888 font-weight-500 small-font-12 text-align-center">
-          you haven't made any Timelines yet
-        </div>
-        <div className="primary-color-text font-weight-500 small-font-12">
+        <div className="color-text-888888 font-weight-500 font-size-14 text-align-center width-46">
+          you haven't added any items yet!
+        <span className="primary-color-text font-weight-500 font-size-14 margin-left-4">
           Create New
+        </span>
         </div>
       </div>
       {/* ///------modal code for create timeline name */}

@@ -11,7 +11,6 @@ function App() {
       <Route exact path="/" element={ <HomePage/>} />
       <Route  path="/innertimeline" element={ <InnerTimelinePage/>} />
     </Routes>
-       
     </>
   )
 }

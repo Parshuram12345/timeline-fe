@@ -1,6 +1,7 @@
-import { BaseUrl, AccessToken,projectid } from './static/timelineConfig';
+import { BaseUrl, AccessToken,projectid,statusList } from './static/timelineConfig';
 export const data = {
    BaseUrl,
    AccessToken,
-   projectid
+   projectid,
+   statusList,
 }

@@ -26,7 +26,7 @@
     background: #FAFAFA;
     padding: 8px;
 }
-  .main-modal-wrapper-mobile{
+.main-modal-wrapper-mobile{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,7 +56,6 @@
     font-size: 13px;
     border-radius: 4px;
     display: block;
-    color: white;
     float: right;
     margin-left: auto;
     margin-right: 0;
@@ -84,9 +83,12 @@
     font-weight: 500;
 }
 .timeline-area{
-    height: 55vh;
+    height: 70vh;
 }
 .divider-bar{
     color: #DFDFDF;
     font-size: 20px;
+}
+.margin-left-4{
+    margin-left: 4px;
 }
