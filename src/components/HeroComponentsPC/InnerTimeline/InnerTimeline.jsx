@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 function InnerTimeline() {
   const [itemsflag, setItemsflag] = useState(false);
   const [ghanttflag, setGhanttflag] = useState(false);
+  const [readonlystatus,setReadonlyStatus]=useState(false)
   const navigate = useNavigate();
   const dummyArr = Array.from({ length: 1 });
   const handleItemsDocs = () => {
@@ -21,6 +22,9 @@ function InnerTimeline() {
   const navigateTimeline = () => {
     navigate("/");
   };
+  const handleReadOnlyStatus=(value)=>{
+    setReadonlyStatus(value)
+  }
   return (
     <div className="innertimeline-wrapper">
       <div className="d-flex align-center justify-between width-fit-content divider-margin">
@@ -251,41 +255,114 @@ function InnerTimeline() {
         />
       </div>
        {/* ///----open update modal--- */}
-       <div className="main-modal-wrapper">
-            <div className="modal-wrapper position-relative">
-              <div>Item 1</div>
-              <img className="closeicon position-absolute" src={"/Images/akar-icons_cross.svg"} alt="close-icon" />
+       {/* { readonlystatus && */}
+        {/* <div className="main-modal-wrapper">
+            <div className="modal-wrapper-pc position-relative">
+              <div className="padding-12 color-text-000000 font-weight-400 font-size-16">Item 1</div>
+              <img onClick={()=>handleReadOnlyStatus(false)} className="closeicon position-absolute" src={"/Images/akar-icons_cross.svg"} alt="close-icon" />
               <div style={{ margin:"0%"}} className="ui divider"></div>
-              <div className="content">
-               <div className="d-flex justify-between width-60">
+              <div className="content padding-12">
+               <div className="d-flex justify-between width-70 divider-margin-3">
                <label className="label-text">Start Date</label>
-               <div>22 sep 2022</div>
+               <div className="width-50">22 sep 2022</div>
                 </div>
-                <div className="d-flex justify-between width-60">
+                <div className="d-flex justify-between width-70 divider-margin-3">
                <label className="label-text">Days</label>
-               <div>9 days</div>
+               <div className="width-50 color-text-000000 font-weight-400">9 days</div>
                   </div>
-                  <div className="d-flex justify-between width-60">
+                  <div className="d-flex justify-between width-70 divider-margin-3">
                <label className="label-text">End Date</label>
-               <div>29 sep 2022</div>
+               <div className="width-50 color-text-000000 font-weight-400">29 sep 2022</div>
                 </div>
-                <div className="d-flex justify-between width-60">
+                <div className="d-flex justify-between width-70 divider-margin-3">
                <label className="label-text">Satus</label>
-               <div style={{color:"#3B5998"}}>Active</div>
+               <div className="width-50 font-weight-400" style={{color:"#3B5998"}}>Active</div>
                 </div>
-               <label className="label-text">Reason</label>
-               <textarea placeholder="Nothing to show here"></textarea>
+               <label className="label-text divider-margin-3">Reason</label>
+               <div className="show-remarks divider-margin-3 color-text-000000 font-weight-400">Nothing to show here</div>
               </div>
-              <div style={{marginTop:"20px"}} className="actions">
+              <div style={{margin:"10px 0",padding:"0 12px"}} className="actions">
                 <div
                   className="ui button yes-btn"
-                  // onClick={() => handleSingleDeleteMOM()}
+                  // onClick={() => handleSingleDeleteMOM()
+                  >
+                  Update Status
+                </div>
+              </div>
+            </div>
+          </div> */}
+            {/*  } */}
+
+             {/* ///----open  edit update modal--- */}
+        <div className="main-modal-wrapper">
+            <div className="modal-wrapper-pc position-relative">
+              <div className="padding-12 color-text-000000 font-weight-400 font-size-16">Item 1</div>
+              <img onClick={()=>handleReadOnlyStatus(false)} className="closeicon position-absolute" src={"/Images/akar-icons_cross.svg"} alt="close-icon" />
+              <div style={{ margin:"0%"}} className="ui divider"></div>
+              <div className="content padding-12">
+               <div className="d-flex justify-between width-70 divider-margin-3">
+               <label className="label-text">Start Date</label>
+               <div className="width-50 border-radius-4">
+                <input className="date-field" placeholder="Select Date"
+                 onFocus={(e) => (e.target.type = "date")}/>
+               </div>
+                </div>
+                <div className="d-flex justify-between width-70 divider-margin-3">
+               <label className="label-text">Days</label>
+               <div className="width-50 color-text-000000">9 days</div>
+                  </div>
+                  <div className="d-flex justify-between width-70 divider-margin-3">
+               <label className="label-text">End Date</label>
+               <div className="width-50 border-radius-4">
+               <input  className="date-field" placeholder="Select Date"
+                 onFocus={(e) => (e.target.type = "date")}/>
+                </div>
+                </div>
+                <div className="d-flex justify-between width-70 divider-margin-3">
+               <label className="label-text">Satus</label>
+               <div className="width-50" style={{color:"#3B5998"}}>Active</div>
+                </div>
+               <label className="label-text divider-margin-3">Reason</label>
+                <textarea className="show-remarks-edit divider-margin-3" rows="5" cols="8"
+                style={{resize:"none"}} 
+                placeholder="Write a reason"
                 >
+                </textarea>
+              </div>
+              <div style={{margin:"10px 0",padding:"0 12px"}} className="actions">
+                <div
+                  className="ui button yes-btn"
+                  // onClick={() => handleSingleDeleteMOM()
+                  >
+                   
                   Update Status
                 </div>
               </div>
             </div>
           </div>
+
+          {/* /// not updating anything item */}
+          {/* <div className="main-modal-wrapper">
+            <div className="modal-updated-yes-no-modal">
+              <div className="content">
+                <div className="padding-12">
+               <div className="color-text-000000 font-size-18 font-weight-400 divider-margin-5">
+                You haven't updated anything in this item yet!
+               </div>
+               <div className="color-text-000000 font-size-16 font-weight-400 divider-margin-5">
+                  Had the work started on the given date?
+               </div>
+                </div>
+               <div className="d-flex justify-between align-center">
+                <div style={{ borderRight: "1px solid #a59595"}} className="color-text-888888 updated-btn width-50 d-flex align-center justify-center">Yes</div>
+                {/* <div style={{background:"#D9D9D9"}} className="border-df">| */}
+                  {/* <img src={"Images/linevertical.svg"} /> */}
+                  {/* </div> */}
+                {/* <div className="color-text-888888 updated-btn width-50 d-flex align-center justify-center">No</div>
+               </div>
+              </div>
+            </div>
+          </div> */} 
     </div>
   );
 }

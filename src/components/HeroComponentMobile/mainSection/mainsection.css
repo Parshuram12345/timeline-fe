@@ -40,8 +40,8 @@
     z-index: 1;
     height: 100vh;
 }
-.modal-wrapper-mobile{
-    width: 85%;
+.modal-wrapper-create-timeline-mobile{
+    width:100%;
     border-radius: 4px;
     border: 1px solid #DFDFDF;
     padding: 20px;
@@ -91,4 +91,16 @@
 }
 .margin-left-4{
     margin-left: 4px;
+}
+.margin-left-5{
+    margin-left:5%
+}
+.min-width-62{
+    min-width: 62%;
+}
+.color-text-666666{
+    color: #666666;
+}
+.status-name{
+    padding: 2px 8px;
 }

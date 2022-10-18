@@ -3,6 +3,7 @@ import "./InnerTimeline.css";
 // import { HiOutlineShare, HiOutlineMinusCircle } from "react-icons/hi";
 import { AiOutlineDelete, AiFillCaretDown } from "react-icons/ai";
 import { FiChevronRight, FiEdit2 } from "react-icons/fi";
+import { HiOutlineMinusCircle} from "react-icons/hi";
 import { Dropdown } from "react-bootstrap";
 import { data } from "../../../utils";
 
@@ -22,6 +23,7 @@ function InnerTimelineMobile() {
   const openAddItemModal = (value) => {
     setOpenaddItem(value);
   };
+  const dummyarr = Array.from({length:5})
   return (
     <div>
       <div className="main-wrapper-mobile">
@@ -82,7 +84,9 @@ function InnerTimelineMobile() {
           </div>
         </div>
         <div style={{ marginTop: "0%" }} className="ui divider"></div>
-        <div
+
+        {/* show empty add notice */}
+        {/* <div
           className="timeline-area d-flex-col align-center justify-center 
       font-weight-500 m-auto border-df border-radius-4"
         >
@@ -107,12 +111,49 @@ function InnerTimelineMobile() {
           >
             Add item
           </div>
+        </div> */}
+        <div className="d-flex justify-flex-start">
+          <div className="width-15"></div>
+          <div className="width-30">Item</div>
+          <div className="width-45">Start Date</div>
+          <div className="width-10"></div>
         </div>
+        <div className="height-60">
+        { dummyarr.map (()=>{
+          return <div className="d-flex justify-flex-start border-df padding-5 divider-margin">
+          <div className="width-15">
+            <img src={"/Images/hash.svg"} alt="hash-icon" />
+          </div>
+          <div className="width-30">Item1</div>
+          <div className="width-45">nil</div>
+          <div className="width-10">
+          <HiOutlineMinusCircle style={{ color: "red" }} />
+          </div>
+        </div>
+        })
+      }
+        </div>
+        <div>
+          <div className="d-flex align-center justify-between">
+        <button
+          className="save-draft-btn border-radius-4"
+        //   onClick={() => handleSaveDraftData()}
+        >
+          Save as Draft
+        </button>
+        <button
+          className="submitbtn bg-color border-radius-4"
+        //   onClick={() => handleSubmitData()}
+          >
+          Share
+        </button>
+          </div>
+          </div>
 
         {/* ///-----open add item modal----/// */}
         {openaddItem && (
           <div className="main-modal-add-item-mobile">
-            <div className="modal-wrapper-mobile position-relative">
+            <div className="modal-wrapper-add-item-mobile position-relative">
               <div
                 className="close-icon-addItem position-absolute"
                 onClick={() => openAddItemModal(false)}
@@ -126,7 +167,7 @@ function InnerTimelineMobile() {
                 style={{ marginTop: "1%", marginBottom: "0" }}
                 className="ui divider"
               ></div>
-              <div className="content main-content d-flex-col justify-around ">
+              <div className="content main-content d-flex-col justify-around">
                 <div>
                   <label className="margin-bottom-5">Item name</label>
                   <input
@@ -185,8 +226,8 @@ function InnerTimelineMobile() {
                   ></textarea>
                 </div>
               </div>
-              <div style={{ marginTop: "10%" }} className="actions">
-                <div className="ui button submit-btn-additem width-100">
+              <div style={{ marginTop: "10%",margin:"0 10px" }} className="actions">
+                <div className="ui button submit-btn-additem">
                   submit
                 </div>
               </div>
