@@ -54,17 +54,23 @@
 .width-3{
     width: 3%;
 }
+.width-12{
+    width: 12%;
+}
 .hash-icon{
     width: 1vw;
 }
 .padding-3{
     padding: 3px;
 }
-.right-20{
-    right: 20px;
+.right-13{
+    right: 13px;
 }
 .top-8{
     top: 8px;
+}
+.arrow-icon{
+    background: white;
 }
 .item-container{
     border-bottom: 1px solid #DFDFDF;
@@ -75,4 +81,48 @@
 }
 .margin-top-10{
     margin-top: 10px;
+}
+.remarks-field{
+    padding-left: 4px;
+}
+/* /// */
+.modal-wrapper{
+    width: 23%;
+    border-radius: 10px;
+    border: 1px solid #DFDFDF;
+    /* padding: 20px; */
+    padding: 0%;
+    background-color: white;
+    box-shadow: 0 20px 75px rgba(0 0 0 /13%);
+}
+.main-modal-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    position: fixed;
+    background: hsla(0,0%,100%,.9);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    height: 100vh;
+}
+.closeicon{
+    width: 1vw;
+    top: 4px;
+    right: 10px;
+}
+.label-text {
+    font-size: 15px;
+    font-weight: 400;
+    color: #888888;
+}
+.ui.button.yes-btn{
+    width: 100%;
+    border: 1px solid #3B5998;
+    color: #3B5998;
+    background-color: #ffffff;
+    border-radius: 4px;
 }
