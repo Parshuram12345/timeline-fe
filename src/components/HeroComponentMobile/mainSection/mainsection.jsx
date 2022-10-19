@@ -4,12 +4,14 @@ import { HiOutlineShare } from "react-icons/hi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Dropdown } from "react-bootstrap";
 import "./mainsection.css";
+import { imageslist } from './../../../utils/images/index';
 
 function Mainsection() {
   const [opeTimelineModal, setOpenTimelineModal] = useState(false);
   const [draftsflag, setDraftsflag] = useState(false);
   const [sentflag, setSentflag] = useState(false);
-
+  const [timelineName,SetTimelineName]=useState("")
+  const { threeDots,addItem,addMoreItem,Ellipse_bg,timelinePlus,colorTimeline,timelineIcon,crossCloseIcon} =imageslist
   ///---create timeline ----///
   const handleCreateTimeline = (value) => {
     setOpenTimelineModal(value);
@@ -24,6 +26,7 @@ function Mainsection() {
     setDraftsflag(true);
     setSentflag(false);
   };
+  
   return (
     <div className="main-wrapper-mobile">
       <div className="d-flex align-center justify-between width-fit-content divider-margin">
@@ -43,12 +46,12 @@ function Mainsection() {
             <img src={"/Images/doublevector.svg"} alt="vector" />
           </div>
           <div className="divider-bar">
-            |{/* <img src={"/Images/line.svg"} alt="vertical-line" /> */}
+            |
           </div>
           <div className="timeline-head font-weight-500">Timeline</div>
         </div>
         <div className="" onClick={() => handleCreateTimeline(true)}>
-          <img src={"/Images/timelineplus.svg"} alt="plus-icon" />
+          <img src={timelinePlus} alt="plus-icon" />
         </div>
       </div>
       <div className="d-flex width-30 justify-between">
@@ -76,12 +79,12 @@ function Mainsection() {
         <div className="position-relative">
           <img
             className="circle-icon-mobile"
-            src={"/Images/Ellipse.svg"}
+            src={Ellipse_bg}
             alt="circle-icon"
           />
           <img
             className="timeline-icon-mobile position-absolute"
-            src={"/Images/timelineIcon.svg"}
+            src={timelineIcon}
             alt="timeline-icon"
           />
         </div>
@@ -123,7 +126,7 @@ function Mainsection() {
                   backgroundColor: "#ECEFF5",
                 }}
               >
-                <img src={"/images/threedots.svg"} alt="threedots" />
+                <img src={threeDots} alt="threedots" />
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item
@@ -173,7 +176,7 @@ function Mainsection() {
               <img
                 className="position-absolute close-icon-mobile"
                 onClick={() => handleCreateTimeline(false)}
-                src={"/Images/akar-icons_cross.svg"}
+                src={crossCloseIcon}
                 alt="cross-icon"
               />
               <input
@@ -181,6 +184,7 @@ function Mainsection() {
                 className="border-df bg-color-fa padding-5 border-radius-4 width-100"
                 placeholder="Timeline name"
               />
+              { timelineName && <div style={{color:"red",fontSize:"10px"}}>Write the timeline</div>}
             </div>
             <div className="actions">
               <div className="ui button submit-btn-mobile">submit</div>

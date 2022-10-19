@@ -6,12 +6,14 @@ import { FiChevronRight, FiEdit2 } from "react-icons/fi";
 import { HiOutlineMinusCircle} from "react-icons/hi";
 import { Dropdown } from "react-bootstrap";
 import { data } from "../../../utils";
+import { imageslist } from './../../../utils/images';
 
 function InnerTimelineMobile() {
   const [itemflag, setItemflag] = useState(false);
   const [ghanttflag, setGhanttflag] = useState(false);
   const [openaddItem, setOpenaddItem] = useState(false);
   const { statusList } = data;
+  const {colorTimeline,downFillArrow,crossCloseIcon,timelinePlus,Ellipse_bg,doubleVector,hash}=imageslist
   const handleItemsDocs = () => {
     setItemflag(false);
     setGhanttflag(true);
@@ -47,7 +49,7 @@ function InnerTimelineMobile() {
         <div className="d-flex justify-between align-center divider-margin">
           <div className="d-flex justify-between align-center width-70">
             <div className="doublevector-icon">
-              <img src={"/Images/doublevector.svg"} alt="vector" />
+              <img src={doubleVector} alt="vector" />
             </div>
             <div className="divider-bar">|</div>
             <div className="timeline-head font-weight-500">
@@ -93,12 +95,12 @@ function InnerTimelineMobile() {
           <div className="position-relative">
             <img
               className="circle-icon-mobile"
-              src={"/Images/Ellipse.svg"}
+              src={Ellipse_bg}
               alt="circle-icon"
             />
             <img
               className="timeline-icon-mobile position-absolute"
-              src={"/Images/timelineIcon.svg"}
+              src={colorTimeline}
               alt="timeline-icon"
             />
           </div>
@@ -122,7 +124,7 @@ function InnerTimelineMobile() {
         { dummyarr.map (()=>{
           return <div className="d-flex justify-flex-start border-df padding-5 divider-margin">
           <div className="width-15">
-            <img src={"/Images/hash.svg"} alt="hash-icon" />
+            <img src={hash} alt="hash-icon" />
           </div>
           <div className="width-30">Item1</div>
           <div className="width-45">nil</div>
@@ -158,7 +160,7 @@ function InnerTimelineMobile() {
                 className="close-icon-addItem position-absolute"
                 onClick={() => openAddItemModal(false)}
               >
-                <img src={"/Images/closeicon.svg"} alt="close-icon" />
+                <img src={crossCloseIcon} alt="close-icon" />
               </div>
               <div className="font-weight-500 font-size-16 add-item-container color-text-000000">
                 Add Item
@@ -211,7 +213,7 @@ function InnerTimelineMobile() {
                   </select>
                   <div className="">
                     <img className="position-absolute down-arrow"
-                      src={"/Images/downfillarrow.svg"}
+                      src={downFillArrow}
                       alt="down-arrow-fill"
                     />
                   </div>

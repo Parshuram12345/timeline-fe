@@ -202,14 +202,15 @@
 .divider-margin-5{
     margin:5px 0;
 }
-input:focus { 
-    /* outline: none !important; */
-    border-color: #3B5998 !important;
-  }
-  ::-webkit-scrollbar {
+
+::-webkit-scrollbar {
     display: none;
 }
 textarea:focus { 
+    outline: none !important;
+    border-color: #3B5998 !important;
+}
+input:focus { 
     outline: none !important;
     border-color: #3B5998 !important;
 }

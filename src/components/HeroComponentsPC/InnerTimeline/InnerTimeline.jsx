@@ -5,10 +5,12 @@ import { AiOutlineDelete, AiFillCaretDown } from "react-icons/ai";
 import { FiChevronRight, FiEdit2 } from "react-icons/fi";
 import { Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { imageslist } from './../../../utils/images';
 function InnerTimeline() {
   const [itemsflag, setItemsflag] = useState(false);
   const [ghanttflag, setGhanttflag] = useState(false);
   const [readonlystatus,setReadonlyStatus]=useState(false)
+  const {lineVertical,hash,threeDots,searchIcon,addItem,addMoreItem,crossCloseIcon}=imageslist
   const navigate = useNavigate();
   const dummyArr = Array.from({ length: 1 });
   const handleItemsDocs = () => {
@@ -87,14 +89,14 @@ function InnerTimeline() {
           <div>
             <img
               className="add-item"
-              src={"/Images/+additem.svg"}
+              src={addItem}
               alt="add-item"
             />
           </div>
           <div>
             <img
               className="search-icon"
-              src={"/Images/searchicon.svg"}
+              src={searchIcon}
               alt="search-icon"
             />
           </div>
@@ -107,7 +109,7 @@ function InnerTimeline() {
                   backgroundColor: "#ffffff",
                 }}
               >
-                <img src={"/Images/threedots.svg"} alt="threedots" />
+                <img src={threeDots} alt="threedots" />
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item>
@@ -150,7 +152,7 @@ function InnerTimeline() {
                   <div className="width-3">
                     <img
                       className="hash-icon"
-                      src={"Images/hash.svg"}
+                      src={hash}
                       alt="hash-icon"
                     />
                   </div>
@@ -169,10 +171,6 @@ function InnerTimeline() {
                       placeholder="Select date"
                       onFocus={(e) => (e.target.type = "date")}
                     />
-                    {/* <AiFillCaretDown
-            style={{ background: "white" }}
-            className="position-absolute down-arrow-date-icon color-text-888888"
-          /> */}
                   </div>
                   <div className="position-relative width-14">
                     <input
@@ -189,10 +187,6 @@ function InnerTimeline() {
                       placeholder="Select date"
                       onFocus={(e) => (e.target.type = "date")}
                     />
-                    {/* <AiFillCaretDown
-            style={{ background: "white" }}
-            className="position-absolute down-arrow-date-icon color-text-888888"
-          /> */}
                   </div>
                   <div className="width-13 position-relative">
                     {/* <Dropdown>
@@ -250,7 +244,7 @@ function InnerTimeline() {
       <div>
         <img
           className="add-more-item"
-          src={"Images/addmoreitem.svg"}
+          src={addMoreItem}
           alt="add-more-item"
         />
       </div>
@@ -283,7 +277,7 @@ function InnerTimeline() {
               </div>
               <div style={{margin:"10px 0",padding:"0 12px"}} className="actions">
                 <div
-                  className="ui button yes-btn"
+                  className="ui button update-btn"
                   // onClick={() => handleSingleDeleteMOM()
                   >
                   Update Status
@@ -297,7 +291,8 @@ function InnerTimeline() {
         <div className="main-modal-wrapper">
             <div className="modal-wrapper-pc position-relative">
               <div className="padding-12 color-text-000000 font-weight-400 font-size-16">Item 1</div>
-              <img onClick={()=>handleReadOnlyStatus(false)} className="closeicon position-absolute" src={"/Images/akar-icons_cross.svg"} alt="close-icon" />
+              <img onClick={()=>handleReadOnlyStatus(false)} className="closeicon position-absolute" 
+              src={crossCloseIcon} alt="close-icon" />
               <div style={{ margin:"0%"}} className="ui divider"></div>
               <div className="content padding-12">
                <div className="d-flex justify-between width-70 divider-margin-3">
@@ -331,10 +326,9 @@ function InnerTimeline() {
               </div>
               <div style={{margin:"10px 0",padding:"0 12px"}} className="actions">
                 <div
-                  className="ui button yes-btn"
+                  className="ui button update-btn"
                   // onClick={() => handleSingleDeleteMOM()
                   >
-                   
                   Update Status
                 </div>
               </div>
@@ -356,7 +350,7 @@ function InnerTimeline() {
                <div className="d-flex justify-between align-center">
                 <div style={{ borderRight: "1px solid #a59595"}} className="color-text-888888 updated-btn width-50 d-flex align-center justify-center">Yes</div>
                 {/* <div style={{background:"#D9D9D9"}} className="border-df">| */}
-                  {/* <img src={"Images/linevertical.svg"} /> */}
+                  {/* <img src={lineVertical} /> */}
                   {/* </div> */}
                 {/* <div className="color-text-888888 updated-btn width-50 d-flex align-center justify-center">No</div>
                </div>

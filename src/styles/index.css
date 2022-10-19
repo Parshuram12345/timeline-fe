@@ -237,6 +237,10 @@ textarea:focus {
     outline: none !important;
     border-color: #3B5998 !important;
 }
+input:focus { 
+    outline: none !important;
+    border-color: #3B5998 !important;
+}
 .color-text-444444{
     color: #444444;
 }
