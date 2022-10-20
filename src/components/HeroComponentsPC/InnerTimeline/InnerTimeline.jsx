@@ -5,12 +5,20 @@ import { AiOutlineDelete, AiFillCaretDown } from "react-icons/ai";
 import { FiChevronRight, FiEdit2 } from "react-icons/fi";
 import { Dropdown } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { imageslist } from './../../../utils/images';
+import { imageslist } from "./../../../utils/images";
 function InnerTimeline() {
   const [itemsflag, setItemsflag] = useState(false);
   const [ghanttflag, setGhanttflag] = useState(false);
-  const [readonlystatus,setReadonlyStatus]=useState(false)
-  const {lineVertical,hash,threeDots,searchIcon,addItem,addMoreItem,crossCloseIcon}=imageslist
+  const [readonlystatus, setReadonlyStatus] = useState(false);
+  const {
+    lineVertical,
+    hash,
+    threeDots,
+    searchIcon,
+    addItem,
+    addMoreItem,
+    crossCloseIcon,
+  } = imageslist;
   const navigate = useNavigate();
   const dummyArr = Array.from({ length: 1 });
   const handleItemsDocs = () => {
@@ -24,9 +32,9 @@ function InnerTimeline() {
   const navigateTimeline = () => {
     navigate("/");
   };
-  const handleReadOnlyStatus=(value)=>{
-    setReadonlyStatus(value)
-  }
+  const handleReadOnlyStatus = (value) => {
+    setReadonlyStatus(value);
+  };
   return (
     <div className="innertimeline-wrapper">
       <div className="d-flex align-center justify-between width-fit-content divider-margin">
@@ -87,18 +95,10 @@ function InnerTimeline() {
         </div>
         <div className="d-flex justify-between align-center width-25">
           <div>
-            <img
-              className="add-item"
-              src={addItem}
-              alt="add-item"
-            />
+            <img className="add-item" src={addItem} alt="add-item" />
           </div>
           <div>
-            <img
-              className="search-icon"
-              src={searchIcon}
-              alt="search-icon"
-            />
+            <img className="search-icon" src={searchIcon} alt="search-icon" />
           </div>
           <div className="width-30">
             <Dropdown>
@@ -150,11 +150,7 @@ function InnerTimeline() {
                   className="item-container d-flex justify-flex-start align-center"
                 >
                   <div className="width-3">
-                    <img
-                      className="hash-icon"
-                      src={hash}
-                      alt="hash-icon"
-                    />
+                    <img className="hash-icon" src={hash} alt="hash-icon" />
                   </div>
                   <div className="position-relative width-13">
                     <input
@@ -189,21 +185,6 @@ function InnerTimeline() {
                     />
                   </div>
                   <div className="width-13 position-relative">
-                    {/* <Dropdown>
-                      <Dropdown.Toggle
-                        as="button"
-                        className="border-df padding-3 border-radius-4 width-88"
-                      >
-                        Yet to start
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <Dropdown.Item>Yet to start</Dropdown.Item>
-                        <Dropdown.Item>ACTIVE</Dropdown.Item>
-                        <Dropdown.Item>PENDING</Dropdown.Item>
-                        <Dropdown.Item>DELAYED</Dropdown.Item>
-                        <Dropdown.Item>COMPLETED</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown> */}
                     <select
                       class="form-select"
                       aria-label="Default select example"
@@ -214,13 +195,13 @@ function InnerTimeline() {
                       <option value="3">DELAYED</option>
                       <option value="3">COMPLETED</option>
                     </select>
-                    <AiFillCaretDown className="position-absolute arrow-icon right-13 top-8 color-text-888888"/>
+                    <AiFillCaretDown className="position-absolute arrow-icon right-13 top-8 color-text-888888" />
                   </div>
                   <div className="width-20 remarks-field">
                     <textarea
                       rows="1"
                       cols="17"
-                      style={{resize:"none"}}
+                      style={{ resize: "none" }}
                       className="border-df border-radius-4 padding-3 bg-color-fa"
                       placeholder="type something..."
                     />
@@ -230,27 +211,23 @@ function InnerTimeline() {
               </>
             );
           })}
-          <div className="d-flex justify-flex-start">
-            <div className="width-3"></div>
-            <div className="width-13">item1</div>
-            <div className="width-18">22 sep 2022</div>
-            <div className="width-14">8 days</div>
-            <div className="width-18">30 sep 2022</div>
-            <div className="width-13">yet to start</div>
-            <div className="width-18">compelete a day before</div>
-            <div></div>
-          </div>
+        <div className="d-flex justify-flex-start">
+          <div className="width-3"></div>
+          <div className="width-13">item1</div>
+          <div className="width-18">22 sep 2022</div>
+          <div className="width-14">8 days</div>
+          <div className="width-18">30 sep 2022</div>
+          <div className="width-13">yet to start</div>
+          <div className="width-18">compelete a day before</div>
+          <div></div>
+        </div>
       </div>
       <div>
-        <img
-          className="add-more-item"
-          src={addMoreItem}
-          alt="add-more-item"
-        />
+        <img className="add-more-item" src={addMoreItem} alt="add-more-item" />
       </div>
-       {/* ///----open update modal--- */}
-       {/* { readonlystatus && */}
-        {/* <div className="main-modal-wrapper">
+      {/* ///----open update modal--- */}
+      {/* { readonlystatus && */}
+      {/* <div className="main-modal-wrapper">
             <div className="modal-wrapper-pc position-relative">
               <div className="padding-12 color-text-000000 font-weight-400 font-size-16">Item 1</div>
               <img onClick={()=>handleReadOnlyStatus(false)} className="closeicon position-absolute" src={"/Images/akar-icons_cross.svg"} alt="close-icon" />
@@ -285,58 +262,93 @@ function InnerTimeline() {
               </div>
             </div>
           </div> */}
-            {/*  } */}
+      {/*  } */}
 
-             {/* ///----open  edit update modal--- */}
-        <div className="main-modal-wrapper">
-            <div className="modal-wrapper-pc position-relative">
-              <div className="padding-12 color-text-000000 font-weight-400 font-size-16">Item 1</div>
-              <img onClick={()=>handleReadOnlyStatus(false)} className="closeicon position-absolute" 
-              src={crossCloseIcon} alt="close-icon" />
-              <div style={{ margin:"0%"}} className="ui divider"></div>
-              <div className="content padding-12">
-               <div className="d-flex justify-between width-70 divider-margin-3">
-               <label className="label-text">Start Date</label>
-               <div className="width-50 border-radius-4">
-                <input className="date-field" placeholder="Select Date"
-                 onFocus={(e) => (e.target.type = "date")}/>
-               </div>
-                </div>
-                <div className="d-flex justify-between width-70 divider-margin-3">
-               <label className="label-text">Days</label>
-               <div className="width-50 color-text-000000">9 days</div>
-                  </div>
-                  <div className="d-flex justify-between width-70 divider-margin-3">
-               <label className="label-text">End Date</label>
-               <div className="width-50 border-radius-4">
-               <input  className="date-field" placeholder="Select Date"
-                 onFocus={(e) => (e.target.type = "date")}/>
-                </div>
-                </div>
-                <div className="d-flex justify-between width-70 divider-margin-3">
-               <label className="label-text">Satus</label>
-               <div className="width-50" style={{color:"#3B5998"}}>Active</div>
-                </div>
-               <label className="label-text divider-margin-3">Reason</label>
-                <textarea className="show-remarks-edit divider-margin-3" rows="5" cols="8"
-                style={{resize:"none"}} 
-                placeholder="Write a reason"
-                >
-                </textarea>
-              </div>
-              <div style={{margin:"10px 0",padding:"0 12px"}} className="actions">
-                <div
-                  className="ui button update-btn"
-                  // onClick={() => handleSingleDeleteMOM()
-                  >
-                  Update Status
-                </div>
+      {/* ///----open  edit update modal--- */}
+      <div className="main-modal-wrapper">
+        <div className="modal-wrapper-pc position-relative">
+          <div className="padding-12 color-text-000000 font-weight-400 font-size-16">
+            Item 1
+          </div>
+          <img
+            onClick={() => handleReadOnlyStatus(false)}
+            className="closeicon position-absolute"
+            src={crossCloseIcon}
+            alt="close-icon"
+          />
+          <div style={{ margin: "0%" }} className="ui divider"></div>
+          <div className="content padding-12">
+            <div className="d-flex justify-between width-70 divider-margin-3">
+              <label className="label-text">Start Date</label>
+              <div className="width-50 border-radius-4">
+                <input
+                  className="date-field border-df border-radius-4 padding-5"
+                  placeholder="Select Date"
+                  onFocus={(e) => (e.target.type = "date")}
+                />
               </div>
             </div>
+            <div className="d-flex justify-between width-70 divider-margin-3">
+              <label className="label-text">Days</label>
+              <div
+                style={{ paddingLeft: "5px" }}
+                className="width-50 color-text-000000"
+              >
+                9 days
+              </div>
+            </div>
+            <div className="d-flex justify-between width-70 divider-margin-3">
+              <label className="label-text">End Date</label>
+              <div className="width-50 border-radius-4">
+                <input
+                  className="date-field border-df border-radius-4 padding-5"
+                  placeholder="Select Date"
+                  onFocus={(e) => (e.target.type = "date")}
+                />
+              </div>
+            </div>
+            <div  style={{width:"76%"}} className="d-flex justify-between divider-margin-3">
+              <label className="label-text">Satus</label>
+              <div className="position-relative" style={{color: "#3B5998",width:"54%"}}>
+                    <select
+                      class="form-select"
+                      aria-label="Default select example"
+                    >,
+                      <option selected>Yet to start</option>
+                      <option value="1">ACTIVE</option>
+                      <option value="2">PENDING</option>
+                      <option value="3">DELAYED</option>
+                      <option value="3">COMPLETED</option>
+                    </select>
+                    <AiFillCaretDown className="position-absolute arrow-icon right-13 top-8 color-text-888888" />
+                  </div>
+              {/* </div> */}
+            </div>
+            <label className="label-text divider-margin-3">Reason</label>
+            <textarea
+              className="show-remarks-edit divider-margin-3"
+              rows="5"
+              cols="8"
+              style={{ resize: "none" }}
+              placeholder="Write a reason"
+            ></textarea>
           </div>
+          <div
+            style={{ margin: "10px 0", padding: "0 12px" }}
+            className="actions"
+          >
+            <div
+              className="ui button update-edit-btn"
+              // onClick={() => handleSingleDeleteMOM()
+            >
+              Update Status
+            </div>
+          </div>
+        </div>
+      </div>
 
-          {/* /// not updating anything item */}
-          {/* <div className="main-modal-wrapper">
+      {/* /// not updating anything item */}
+      {/* <div className="main-modal-wrapper">
             <div className="modal-updated-yes-no-modal">
               <div className="content">
                 <div className="padding-12">
@@ -350,13 +362,13 @@ function InnerTimeline() {
                <div className="d-flex justify-between align-center">
                 <div style={{ borderRight: "1px solid #a59595"}} className="color-text-888888 updated-btn width-50 d-flex align-center justify-center">Yes</div>
                 {/* <div style={{background:"#D9D9D9"}} className="border-df">| */}
-                  {/* <img src={lineVertical} /> */}
-                  {/* </div> */}
-                {/* <div className="color-text-888888 updated-btn width-50 d-flex align-center justify-center">No</div>
+      {/* <img src={lineVertical} /> */}
+      {/* </div> */}
+      {/* <div className="color-text-888888 updated-btn width-50 d-flex align-center justify-center">No</div>
                </div>
               </div>
             </div>
-          </div> */} 
+          </div> */}
     </div>
   );
 }
