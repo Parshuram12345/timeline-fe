@@ -11,9 +11,7 @@ function InnerTimelinePage() {
             <SideNavbar/>
             <InnerTimeline/>
         </div>
-
     </div>
   )
 }
-
 export default InnerTimelinePage

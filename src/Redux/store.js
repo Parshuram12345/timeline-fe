@@ -2,7 +2,7 @@
 import thunk from "redux-thunk";
 import rootReducer from "./Reducers";
 import storage from "redux-persist/lib/storage";
-import { createStore, applyMiddleware, compose } from "redux";
+import { legacy_createStore as createStore, applyMiddleware, compose } from "redux";
 import { persistStore, persistReducer } from "redux-persist";
 
 // ** Dev Tools

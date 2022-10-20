@@ -35,6 +35,32 @@ function InnerTimeline() {
   const handleReadOnlyStatus = (value) => {
     setReadonlyStatus(value);
   };
+ 
+  ///---fixed the every status color in drop-down------////
+  const handleSelectStatus = (e)=>{
+    console.log(e.target.value)
+      const selectedStatus = document.getElementsByClassName("form-select")[0]
+      switch(e.target.value){
+        case "Yet to start":
+          selectedStatus.style.color="#888888";
+          break;
+        case "Active":
+          console.log("active")
+          selectedStatus.style.color="#3B5998";
+          break;
+        case "Pending":
+          selectedStatus.style.color="#BBB400";
+          break;
+        case "Delayed":
+          selectedStatus.style.color="#D50000";
+          break;
+        case "Completed":
+          selectedStatus.style.color="#2BA400";
+          break;
+      }
+      // console.log()
+  }
+
   return (
     <div className="innertimeline-wrapper">
       <div className="d-flex align-center justify-between width-fit-content divider-margin">
@@ -186,14 +212,14 @@ function InnerTimeline() {
                   </div>
                   <div className="width-13 position-relative">
                     <select
-                      class="form-select"
+                      className="form-select"
                       aria-label="Default select example"
                     >
                       <option selected>Yet to start</option>
-                      <option value="1">ACTIVE</option>
-                      <option value="2">PENDING</option>
-                      <option value="3">DELAYED</option>
-                      <option value="3">COMPLETED</option>
+                      <option>Active</option>
+                      <option>Pending</option>
+                      <option>Delayed</option>
+                      <option>Completed</option>
                     </select>
                     <AiFillCaretDown className="position-absolute arrow-icon right-13 top-8 color-text-888888" />
                   </div>
@@ -311,14 +337,19 @@ function InnerTimeline() {
               <label className="label-text">Satus</label>
               <div className="position-relative" style={{color: "#3B5998",width:"54%"}}>
                     <select
-                      class="form-select"
-                      aria-label="Default select example"
-                    >,
-                      <option selected>Yet to start</option>
-                      <option value="1">ACTIVE</option>
-                      <option value="2">PENDING</option>
-                      <option value="3">DELAYED</option>
-                      <option value="3">COMPLETED</option>
+                      className="form-select"
+                      onChange={handleSelectStatus}
+                    >
+                      {/* <option  style={{color:"#888888"}} selected>Yet to start</option>
+                      <option style={{color:"#3B5998"}} value="1">ACTIVE</option>
+                      <option  style={{color:"#BBB400"}}  value="2">PENDING</option>
+                      <option  style={{color:"#D50000"}} value="3">DELAYED</option>
+                    <option  style={{color:"#2BA400"}} value="3">COMPLETED</option> */}
+                    <option selected>Yet to start</option>
+                      <option>Active</option>
+                      <option>Pending</option>
+                      <option>Delayed</option>
+                      <option>Completed</option>
                     </select>
                     <AiFillCaretDown className="position-absolute arrow-icon right-13 top-8 color-text-888888" />
                   </div>

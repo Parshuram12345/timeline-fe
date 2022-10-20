@@ -5,19 +5,27 @@ import { useNavigate } from "react-router-dom";
 import { HiOutlineShare } from "react-icons/hi";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Dropdown } from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
 import "./mainSection.css";
 import { data } from "../../../utils";
 import { imageslist } from './../../../utils/images/index';
+import { createTimelineData, getTimelinedata } from "../../../Redux/Actions/timelineAction";
+// import timelineReducer from './../../../Redux/Reducers/timelineReducer';
 
 function MainSection() {
+  const dispatch = useDispatch()
+  const appState = useSelector((state)=> state.timelineReducer)
+  const {timelineData} = appState;
+  console.log(timelineData,timelineData.data)
   const [opeTimelineModal, setOpenTimelineModal] = useState(false);
   const [draftsflag, setDraftsflag] = useState(false);
   const [sentflag, setSentflag] = useState(false);
   const [timelineName, setTimelineName] = useState("");
   const [timelineNameError, setTimelineNameError] = useState(false);
   const [opendeleteModal,setOpendeleteModal]=useState(false)
-  const [timelinelist,setTimelinelist]=useState([])
+  // const [timelinelist,setTimelinelist]=useState([])
   const [singleDeleteTimeline,setSingleDeleteTimeline]=useState("")
+  // console.log(timelineData.data)
   const navigate = useNavigate();
   const { AccessToken, BaseUrl, projectid,monthList } = data;
   const {crossCloseIcon,Ellipse_bg,threeDots,colorTimeline,timelineIcon}=imageslist 
@@ -87,66 +95,64 @@ function MainSection() {
   if(timelineName && timelineNameError) setTimelineNameError(false);
 
   ///---read the mom and edit it---///
-  async function createTimeLine() {
-    if (timelineName) {
-      await axios({
-        method: "post",
-        url: `${BaseUrl}/api/timeline/addEditTimeline`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: AccessToken,
-        },
-        data: {
-          projectId: projectid,
-          name: timelineName,
-        },
-      })
-        .then((response) => {
-          if (response.status === 200) {
-            navigate("/")
-            window.location.reload(false);
-            setTimelineName("");
-            setOpenTimelineModal(false);
-            setTimelineNameError(false)
-            console.log(response.data);
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+  function createTimeLine() {
+    if(timelineName){
+      dispatch(createTimelineData(projectid,timelineName))
+    } else{
+            console.log("enter the timeline name")
+            setTimelineNameError(true)
     }
-    else{
-      console.log("enter the timeline name")
-      setTimelineNameError(true)
-  }
-}
-  ///---- get the timeline ----- ///
-  async function getTimeline() {
-    return await axios({
-      method: "get",
-      url: `${BaseUrl}/api/timeline/getTimelines?projectId=${projectid}`,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: AccessToken,
-      },
-    });
+//     if (timelineName) {
+//       await axios({
+//         method: "post",
+//         url: `${BaseUrl}/api/timeline/addEditTimeline`,
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: AccessToken,
+//         },
+//         data: {
+//           projectId: projectid,
+//           name: timelineName,
+//         },
+//       })
+//         .then((response) => {
+//           if (response.status === 200) {
+//             navigate("/")
+//             window.location.reload(false);
+//             setTimelineName("");
+//             setOpenTimelineModal(false);
+//             setTimelineNameError(false)
+//             console.log(response.data);
+//           }
+//         })
+//         .catch((err) => {
+//           console.log(err);
+//         });
+//     }
+//     else{
+//       console.log("enter the timeline name")
+//       setTimelineNameError(true)
+//   }
+// }
+  // ///---- get the timeline ----- ///
+  // async function getTimeline() {
+  //   return await axios({
+  //     method: "get",
+  //     url: `${BaseUrl}/api/timeline/getTimelines?projectId=${projectid}`,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: AccessToken,
+  //     },
+  //   });
   }
   
  
   useEffect(() => {
-    getTimeline()
-      .then((response) => {
-        if (response.status===200) {
-          console.log(response.data[0].name);
-          setTimelinelist(response.data)
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    dispatch(getTimelinedata(projectid))
+    // setTimelinelist(timelineData.data)
+  },[]);
 
-  console.log(timelinelist)
+  // console.log(timelinelist)
   return (
     <div className="main-wrapper">
       {/* modal for delete timeline */}
@@ -214,7 +220,7 @@ function MainSection() {
       </div>
       <div style={{ marginTop: "0%" }} className="ui divider"></div>
 
-      { timelinelist.length===0 ? <div className="timeline-area d-flex-col align-center justify-center font-weight-500 m-auto">
+      { timelineData?.data?.length===0 ? <div className="timeline-area d-flex-col align-center justify-center font-weight-500 m-auto">
         <div className="position-relative">
         <img
           className="circle-icon"
@@ -252,12 +258,12 @@ function MainSection() {
         </div>
       </div>}
       <div>
-        {timelinelist &&
-          timelinelist.map(( {name,createdAt,_id}, index) => {
+        {timelineData &&
+          timelineData?.data?.map(({name,createdAt,_id}, index) => {
             return (
               <>
                 <div
-                  key={index}
+                  key={_id}
                   className="d-flex align-center justify-between border-radius-4 border-df divider-margin-8"
                 >
                   <div
@@ -336,7 +342,7 @@ function MainSection() {
             </div>
             { timelineNameError && <div style={{color:"red",fontSize:"10px",paddingLeft:"7px"}}>Write the timeline</div>}
             <div className="actions">
-              <div className="ui button submit-btn" onClick={createTimeLine}>
+              <div className="ui button submit-btn" onClick={()=> createTimeLine()}>
                 submit
               </div>
             </div>
