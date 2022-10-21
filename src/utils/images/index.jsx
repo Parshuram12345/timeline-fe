@@ -11,7 +11,8 @@ import searchIcon from "../../Images/searchicon.svg"
 import lineVertical from "../../Images/linevertical.svg"
 import threeDots from "../../Images/threedots.svg"
 import Ellipse_bg from "../../Images/Ellipse.svg"
-import crossCloseIcon from "../../Images/crosscloseicon.svg"
+import crossCloseIcon from "../../Images/crosscloseicon.svg";
+import minusCircelOutline from "../../Images/minuscircleoutline.svg"
 export const imageslist ={
     addItem,
     addMoreItem,
@@ -26,5 +27,6 @@ export const imageslist ={
     lineVertical,
     threeDots,
     crossCloseIcon,
-    Ellipse_bg
+    Ellipse_bg,
+    minusCircelOutline
 }

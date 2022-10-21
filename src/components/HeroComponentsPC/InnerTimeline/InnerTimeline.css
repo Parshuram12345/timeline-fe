@@ -55,7 +55,17 @@
     width: 12%;
 }
 .hash-icon{
-    width: 1vw;
+    width: 25%;
+    display:none
+}
+.minus-icon{
+    display:none;
+}
+.item-container{
+    padding: 3px;
+}
+.item-container:hover .minus-icon .hash-icon{
+  display: block;
 }
 .padding-3{
     padding: 3px;
@@ -69,10 +79,7 @@
 .arrow-icon{
     background: white;
 }
-.item-container{
-    border-bottom: 1px solid #DFDFDF;
-    padding: 3px;
-}
+
 .add-more-item{
     width: 6vw;
 }

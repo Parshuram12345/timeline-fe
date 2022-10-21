@@ -10,13 +10,12 @@ import "./mainSection.css";
 import { data } from "../../../utils";
 import { imageslist } from './../../../utils/images/index';
 import { createTimelineData, getTimelinedata } from "../../../Redux/Actions/timelineAction";
-// import timelineReducer from './../../../Redux/Reducers/timelineReducer';
 
 function MainSection() {
   const dispatch = useDispatch()
   const appState = useSelector((state)=> state.timelineReducer)
   const {timelineData} = appState;
-  console.log(timelineData,timelineData.data)
+  // console.log(timelineData,timelineData.data)
   const [opeTimelineModal, setOpenTimelineModal] = useState(false);
   const [draftsflag, setDraftsflag] = useState(false);
   const [sentflag, setSentflag] = useState(false);
@@ -98,6 +97,7 @@ function MainSection() {
   function createTimeLine() {
     if(timelineName){
       dispatch(createTimelineData(projectid,timelineName))
+      navigate("/innertimeline")
     } else{
             console.log("enter the timeline name")
             setTimelineNameError(true)

@@ -1,6 +1,5 @@
 import { getReq, postReq, putReq } from "../../service/api";
 import { BaseUrl } from "../../utils/static/timelineConfig";
-// console.log(getReq)
 
 export function getTimelineData(timelineData) {
   return {

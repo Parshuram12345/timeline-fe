@@ -9,6 +9,7 @@ import { imageslist } from "./../../../utils/images";
 function InnerTimeline() {
   const [itemsflag, setItemsflag] = useState(false);
   const [ghanttflag, setGhanttflag] = useState(false);
+  const [editUpdate,setEditUpdate]=useState(false)
   const [readonlystatus, setReadonlyStatus] = useState(false);
   const {
     lineVertical,
@@ -18,9 +19,10 @@ function InnerTimeline() {
     addItem,
     addMoreItem,
     crossCloseIcon,
+    minusCircelOutline
   } = imageslist;
   const navigate = useNavigate();
-  const dummyArr = Array.from({ length: 1 });
+  const dummyArr = Array.from({ length: 5 });
   const handleItemsDocs = () => {
     setItemsflag(false);
     setGhanttflag(true);
@@ -35,31 +37,31 @@ function InnerTimeline() {
   const handleReadOnlyStatus = (value) => {
     setReadonlyStatus(value);
   };
- 
+
   ///---fixed the every status color in drop-down------////
-  const handleSelectStatus = (e)=>{
-    console.log(e.target.value)
-      const selectedStatus = document.getElementsByClassName("form-select")[0]
-      switch(e.target.value){
-        case "Yet to start":
-          selectedStatus.style.color="#888888";
-          break;
-        case "Active":
-          console.log("active")
-          selectedStatus.style.color="#3B5998";
-          break;
-        case "Pending":
-          selectedStatus.style.color="#BBB400";
-          break;
-        case "Delayed":
-          selectedStatus.style.color="#D50000";
-          break;
-        case "Completed":
-          selectedStatus.style.color="#2BA400";
-          break;
-      }
-      // console.log()
-  }
+  const handleSelectStatus = (e) => {
+    console.log(e.target.value);
+    const selectedStatus = document.getElementsByClassName("form-select")[0];
+    switch (e.target.value) {
+      case "Yet to start":
+        selectedStatus.style.color = "#888888";
+        break;
+      case "Active":
+        console.log("active");
+        selectedStatus.style.color = "#3B5998";
+        break;
+      case "Pending":
+        selectedStatus.style.color = "#BBB400";
+        break;
+      case "Delayed":
+        selectedStatus.style.color = "#D50000";
+        break;
+      case "Completed":
+        selectedStatus.style.color = "#2BA400";
+        break;
+    }
+    // console.log()
+  };
 
   return (
     <div className="innertimeline-wrapper">
@@ -100,8 +102,8 @@ function InnerTimeline() {
           </button>
         </div>
       </div>
-      <div className="d-flex justify-between align-center margin-top-10">
-        <div className="d-flex width-12 justify-between">
+      <div style={{marginTop:"15px"}} className="d-flex justify-between align-center">
+        <div className="d-flex width-15 justify-between">
           <div
             className={`font-weight-500 ${
               !itemsflag ? "items-tab" : "ghantt-tab"
@@ -165,8 +167,8 @@ function InnerTimeline() {
         <div className="width-15">Status</div>
         <div className="width-20">Remark</div>
       </div>
-      <div style={{ marginTop: "0%" }} className="ui divider"></div>
-      <div>
+     
+      <div  style={{borderRadius:"12px",padding:"8px"}} className="border-radius-4 border-df">
         {dummyArr &&
           dummyArr.map((_, index) => {
             return (
@@ -223,17 +225,21 @@ function InnerTimeline() {
                     </select>
                     <AiFillCaretDown className="position-absolute arrow-icon right-13 top-8 color-text-888888" />
                   </div>
-                  <div className="width-20 remarks-field">
+                  <div className="width-20 remarks-field border-df border-radius-4">
                     <textarea
                       rows="1"
                       cols="17"
                       style={{ resize: "none" }}
-                      className="border-df border-radius-4 padding-3 bg-color-fa"
+                      className="padding-3 bg-color-fa border-none"
                       placeholder="type something..."
                     />
+                  </div> 
+                  <div style={{width:"3%"}} >
+                    <img src={minusCircelOutline} className="minus-icon" alt="minus-icon"/>
                   </div>
-                  <HiOutlineMinusCircle style={{ color: "red" }} />
                 </div>
+                {/* <div style={{ marginTop: "0%" }} className="ui divider"></div> */}
+                <hr style={{ marginTop: "2px",marginBottom:"0" }}/>
               </>
             );
           })}
@@ -291,7 +297,8 @@ function InnerTimeline() {
       {/*  } */}
 
       {/* ///----open  edit update modal--- */}
-      <div className="main-modal-wrapper">
+      
+      { editUpdate && <div className="main-modal-wrapper">
         <div className="modal-wrapper-pc position-relative">
           <div className="padding-12 color-text-000000 font-weight-400 font-size-16">
             Item 1
@@ -333,27 +340,29 @@ function InnerTimeline() {
                 />
               </div>
             </div>
-            <div  style={{width:"76%"}} className="d-flex justify-between divider-margin-3">
+            <div
+              style={{ width: "76%" }}
+              className="d-flex justify-between divider-margin-3"
+            >
               <label className="label-text">Satus</label>
-              <div className="position-relative" style={{color: "#3B5998",width:"54%"}}>
-                    <select
-                      className="form-select"
-                      onChange={handleSelectStatus}
-                    >
-                      {/* <option  style={{color:"#888888"}} selected>Yet to start</option>
+              <div
+                className="position-relative"
+                style={{ color: "#3B5998", width: "54%" }}
+              >
+                <select className="form-select" onChange={handleSelectStatus}>
+                  {/* <option  style={{color:"#888888"}} selected>Yet to start</option>
                       <option style={{color:"#3B5998"}} value="1">ACTIVE</option>
                       <option  style={{color:"#BBB400"}}  value="2">PENDING</option>
                       <option  style={{color:"#D50000"}} value="3">DELAYED</option>
                     <option  style={{color:"#2BA400"}} value="3">COMPLETED</option> */}
-                    <option selected>Yet to start</option>
-                      <option>Active</option>
-                      <option>Pending</option>
-                      <option>Delayed</option>
-                      <option>Completed</option>
-                    </select>
-                    <AiFillCaretDown className="position-absolute arrow-icon right-13 top-8 color-text-888888" />
-                  </div>
-              {/* </div> */}
+                  <option selected>Yet to start</option>
+                  <option>Active</option>
+                  <option>Pending</option>
+                  <option>Delayed</option>
+                  <option>Completed</option>
+                </select>
+                <AiFillCaretDown className="position-absolute arrow-icon right-13 top-8 color-text-888888" />
+              </div>
             </div>
             <label className="label-text divider-margin-3">Reason</label>
             <textarea
@@ -376,7 +385,7 @@ function InnerTimeline() {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
 
       {/* /// not updating anything item */}
       {/* <div className="main-modal-wrapper">
