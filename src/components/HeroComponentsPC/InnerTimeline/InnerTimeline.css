@@ -1,3 +1,4 @@
+
 .innertimeline-wrapper{
     margin: 0 20px;
     width: 80%;
@@ -37,7 +38,7 @@
     width: 1vw;
 }
 .items-wrapper{
-    padding: 10px 30px;
+    padding: 10px 0px;
 }
 .down-arrow-icon{
     right: 32px; 
@@ -48,24 +49,21 @@
     right: 32px; 
     top: 10px;
 }
-.width-3{
-    width: 3%;
-}
-.width-12{
-    width: 12%;
-}
+
 .hash-icon{
     width: 25%;
-    display:none
 }
-.minus-icon{
-    display:none;
+.hash-wrapper{
+    opacity: 1;
+}
+.minus-icon-wrapper{
+    opacity: 1;
+}
+  .visiblity-none{
+    opacity: 0;
 }
 .item-container{
     padding: 3px;
-}
-.item-container:hover .minus-icon .hash-icon{
-  display: block;
 }
 .padding-3{
     padding: 3px;
@@ -170,4 +168,7 @@
     border: 1px solid #DFDFDF;
     background-color: white;
     box-shadow: 0 20px 75px rgba(0 0 0 /13%);
+}
+.padding-left-10{
+    padding-left: 10px;
 }

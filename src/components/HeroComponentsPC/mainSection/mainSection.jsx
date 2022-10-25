@@ -22,7 +22,8 @@ function MainSection() {
   const [timelineName, setTimelineName] = useState("");
   const [timelineNameError, setTimelineNameError] = useState(false);
   const [opendeleteModal,setOpendeleteModal]=useState(false)
-  // const [timelinelist,setTimelinelist]=useState([])
+  const [timelineDraftlist,setTimelineDraftlist]=useState([])
+  const [timelineSentlist,setTimelineSentlist]=useState([])
   const [singleDeleteTimeline,setSingleDeleteTimeline]=useState("")
   // console.log(timelineData.data)
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ function MainSection() {
   const {crossCloseIcon,Ellipse_bg,threeDots,colorTimeline,timelineIcon}=imageslist 
   const dummayarr = Array.from({ length: 2 });
 
+  
   ///---go to InnerPage of Timeline----///
   const goToInnerTimeline = () => {
     navigate("/innertimeline");
@@ -149,10 +151,12 @@ function MainSection() {
  
   useEffect(() => {
     dispatch(getTimelinedata(projectid))
-    // setTimelinelist(timelineData.data)
-  },[]);
+    // setTimelineDraftlist(timelineData.data)
+    setTimelineDraftlist(timelineData?.data?.filter((item)=> item.isDraft===true))
+    setTimelineSentlist(timelineData?.data?.filter((item)=> item.isDraft===false))
+  },[timelineData]);
 
-  // console.log(timelinelist)
+  // console.log(timelineDraftlist,timelineDraftlist?.length)
   return (
     <div className="main-wrapper">
       {/* modal for delete timeline */}
@@ -220,7 +224,8 @@ function MainSection() {
       </div>
       <div style={{ marginTop: "0%" }} className="ui divider"></div>
 
-      { timelineData?.data?.length===0 ? <div className="timeline-area d-flex-col align-center justify-center font-weight-500 m-auto">
+      { !draftsflag ?
+       (timelineDraftlist?.length===0 ? <div className="timeline-area d-flex-col align-center justify-center font-weight-500 m-auto">
         <div className="position-relative">
         <img
           className="circle-icon"
@@ -256,10 +261,49 @@ function MainSection() {
         <div className="timeline-header width-12 small-font-12 font-weight-400">
           Status
         </div>
-      </div>}
+      </div>):
+    (timelineSentlist?.length===0 ? <div className="timeline-area d-flex-col align-center justify-center font-weight-500 m-auto">
+    <div className="position-relative">
+    <img
+      className="circle-icon"
+      src={Ellipse_bg}
+      alt="circle-icon"
+    />
+    <img
+      className="timeline-icon position-absolute"
+      src={timelineIcon}
+      alt="timeline-icon"
+      />
+      </div>
+    <div className="color-text-888888 font-weight-500 small-font-12 text-align-center">
+      you haven't sent any Timelines yet
+    </div>
+    <div className="primary-color-text font-weight-500 small-font-12"
+     onClick={() => handleCreateTimeline(true)}>Create New
+    </div>
+    </div>
+    : <div className="d-flex justify-flex-start">
+    <div className="timeline-header width-12 margin-left-6 small-font-12 font-weight-400">
+      Name
+    </div>
+    <div className="timeline-header width-15 small-font-12 font-weight-400">
+      Created Date
+    </div>
+    <div className="timeline-header width-20 small-font-12 font-weight-400">
+      Timeline Start Date
+    </div>
+    <div className="timeline-header width-20 small-font-12 font-weight-400">
+      Timeline End Date
+    </div>
+    <div className="timeline-header width-12 small-font-12 font-weight-400">
+      Status
+    </div>
+  </div>)
+      }
       <div>
-        {timelineData &&
-          timelineData?.data?.map(({name,createdAt,_id}, index) => {
+        {  !draftsflag ? 
+        (timelineDraftlist?.length>0 &&
+          timelineDraftlist?.map(({name,createdAt,_id}, index) => {
             return (
               <>
                 <div
@@ -317,7 +361,69 @@ function MainSection() {
                 </div>
               </>
             );
-          })}
+          })):
+          (timelineSentlist?.length>0 &&
+            timelineSentlist?.map(({name,createdAt,_id}, index) => {
+              return (
+                <>
+                  <div
+                    key={_id}
+                    className="d-flex align-center justify-between border-radius-4 border-df divider-margin-8"
+                  >
+                    <div
+                      className="timeline-content-wrapper d-flex justify-flex-start cursor-pointer"
+                      onClick={goToInnerTimeline}
+                    >
+                      <div className="width-6">
+                        <img
+                          className=""
+                          src={colorTimeline}
+                          alt="colorTimeline"
+                        />
+                      </div>
+                      <div className="width-15">{name}</div>
+                      <div className="width-19">{createdAt &&
+                              `${createdAt?.substring(8, 10)} ${ monthList[createdAt?.substring(5,7
+                              )]} ${createdAt?.substring(0, 4)}`}</div>
+                      <div className="width-25">{index + 30} Sep 2022</div>
+                      <div className="width-24">{index + 1} Nov 2022</div>
+                      <div className="status-container width-15">
+                        Yet to start
+                      </div>
+                    </div>
+                    <div className="width-3">
+                      <Dropdown>
+                        <Dropdown.Toggle
+                          as="button"
+                          style={{
+                            border: "none",
+                            backgroundColor: "#ffffff",
+                          }}
+                        >
+                          <img src={threeDots} alt="threedots" />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          <Dropdown.Item>
+                            <HiOutlineShare className="share-icon" />
+                            Share
+                          </Dropdown.Item>
+                          {/* <Dropdown.Item>
+                            <FiEdit2 className="share-icon" />
+                            Edit
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={()=>handleTimelineDeleteModal(true,_id,name)}>
+                            <AiOutlineDelete className="share-icon" />
+                             Delete
+                          </Dropdown.Item> */}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </div>
+                  </div>
+                </>
+              );
+            }))
+          
+        }
       </div>
 
       {/* ///------modal code for create timeline name */}

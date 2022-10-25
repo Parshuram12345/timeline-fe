@@ -20,7 +20,7 @@ export function getTimelinedata(projectId) {
       `${BaseUrl}/api/timeline/getTimelines?projectId=${projectId}`
     );
     if (response && !response.error) {
-        console.log(response)
+        // console.log(response)
       dispatch(getTimelineData(response));
     } else {
       console.log(response.error);

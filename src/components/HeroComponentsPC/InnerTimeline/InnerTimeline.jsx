@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef,useState } from "react";
 import "./InnerTimeline.css";
 import { HiOutlineShare, HiOutlineMinusCircle } from "react-icons/hi";
 import { AiOutlineDelete, AiFillCaretDown } from "react-icons/ai";
@@ -11,6 +11,11 @@ function InnerTimeline() {
   const [ghanttflag, setGhanttflag] = useState(false);
   const [editUpdate,setEditUpdate]=useState(false)
   const [readonlystatus, setReadonlyStatus] = useState(false);
+  const dragItem = useRef();
+  const dragOverItem = useRef();
+  const [hoverEffect,setHoverEffect]=useState("")
+  const [listitem,setListitem] = useState(Array.from({ length: 5 },(v,i)=> i));
+  console.log(listitem)
   const {
     lineVertical,
     hash,
@@ -22,7 +27,7 @@ function InnerTimeline() {
     minusCircelOutline
   } = imageslist;
   const navigate = useNavigate();
-  const dummyArr = Array.from({ length: 5 });
+  
   const handleItemsDocs = () => {
     setItemsflag(false);
     setGhanttflag(true);
@@ -37,7 +42,41 @@ function InnerTimeline() {
   const handleReadOnlyStatus = (value) => {
     setReadonlyStatus(value);
   };
+ 
+  ///---on hover show the image ----///
 
+  const imgHoverEffect=(id)=>{
+    setHoverEffect(id)
+  }
+///------drag and drop down functionality -----///
+//--locate the item to be dragged----///
+  const dragStart=(e,position)=>{
+    dragItem.current = position;
+    // console.log(e.target.innerHTML);
+  }
+  ///-----track item being dragged------///
+  const dragEnter=(e,position)=>{
+    dragOverItem.current = position;
+    // console.log(e.target.innerHTML);
+  }
+  ///-----Rearrange the list ------///
+  const arangeDropItem=()=>{
+    const copyListItems = [...listitem];
+    console.log(listitem)
+    const dragItemContent = copyListItems[dragItem.current];
+    copyListItems.splice(dragItem.current, 1);
+    copyListItems.splice(dragOverItem.current, 0, dragItemContent);
+    dragItem.current = null;
+    dragOverItem.current = null;
+    console.log(copyListItems)
+    setListitem(copyListItems);
+  }
+
+  ///----add moreitem with onclick button---//
+  const addMoreListItem =()=>{
+    setListitem((prev)=> [...prev,prev.length++])
+    // console.log(listitem.length)
+  }
   ///---fixed the every status color in drop-down------////
   const handleSelectStatus = (e) => {
     console.log(e.target.value);
@@ -64,7 +103,7 @@ function InnerTimeline() {
   };
 
   return (
-    <div className="innertimeline-wrapper">
+<div className="innertimeline-wrapper">
       <div className="d-flex align-center justify-between width-fit-content divider-margin">
         <div className="small-font-12 color-text-888888">
           Ashok rathi residence
@@ -122,7 +161,7 @@ function InnerTimeline() {
           </div>
         </div>
         <div className="d-flex justify-between align-center width-25">
-          <div>
+          <div onClick={addMoreListItem}>
             <img className="add-item" src={addItem} alt="add-item" />
           </div>
           <div>
@@ -160,64 +199,80 @@ function InnerTimeline() {
       <div style={{ marginTop: "0%" }} className="ui divider"></div>
       {/* <div>Timeline 1</div> */}
       <div className="items-wrapper d-flex justify-flex-start color-text-444444 font-weight-400">
-        <div className="width-15">Items</div>
-        <div className="width-20">Start Date</div>
-        <div className="width-15">Days</div>
-        <div className="width-20">End Date</div>
-        <div className="width-15">Status</div>
-        <div className="width-20">Remark</div>
+        <div className="width-4"></div>
+        <div className="width-10 small-font-12">Items</div>
+        <div className="width-3"></div>
+        <div className="width-13 small-font-12">Start Date</div>
+        <div className="width-3"></div>
+        <div className="width-11 small-font-12">Days</div>
+        <div className="width-5"></div>
+        <div className="width-13 small-font-12">End Date</div>
+        <div className="width-5"></div>
+        <div className="width-12 small-font-12 padding-left-10">Status</div>
+        <div className="width-10"></div>
+        <div  className="width-14 small-font-12 padding-left-10">Remark</div>
+        <div className="width-5"></div>
       </div>
      
-      <div  style={{borderRadius:"12px",padding:"8px"}} className="border-radius-4 border-df">
-        {dummyArr &&
-          dummyArr.map((_, index) => {
+      <div  style={{borderRadius:"12px",padding:"8px 0"}} className="border-radius-4 border-df">
+        {listitem &&
+          listitem.map((_, index) => {
             return (
               <>
                 <div
                   key={index}
-                  className="item-container d-flex justify-flex-start align-center"
+                  draggable
+                  onMouseOver={()=> imgHoverEffect(`img_${index+1}`)}
+                  onDragStart={(e) => dragStart(e, index)}
+                  onDragEnter={(e) => dragEnter(e, index)}
+                  onDragEnd={arangeDropItem}
+                  className="item-container d-flex justify-flex-start align-center cursor-pointer"
                 >
-                  <div className="width-3">
+                  <div style={{paddingLeft:"5px"}} className={`hash-show width-3 text-align-center ${hoverEffect===`img_${index+1}`? "minus-icon-wrapper":"visiblity-none"}`}>
                     <img className="hash-icon" src={hash} alt="hash-icon" />
                   </div>
-                  <div className="position-relative width-13">
+                  <div className="width-10">
                     <input
                       type="text"
-                      className="border-df bg-color-fa border-radius-4 padding-3 width-80"
-                      placeholder="Item name"
+                      className="border-df bg-color-fa border-radius-4 padding-3 width-100 text-align-center"
+                      placeholder={`Item name${index}`}
                     />
-                    <AiFillCaretDown className="position-absolute down-arrow-icon color-text-888888" />
                   </div>
-                  <div className="d-flex justify-between align-center position-relative width-18">
+                  <div className="width-3"></div>
+                  <div className="width-12">
                     <input
                       type="text"
-                      className="border-df bg-color-ff padding-5 border-radius-4 width-88"
+                      style={{maxWidth:"100%"}}
+                      className="border-df bg-color-ff border-radius-4 padding-3 text-align-center"
                       placeholder="Select date"
                       onFocus={(e) => (e.target.type = "date")}
                     />
                   </div>
-                  <div className="position-relative width-14">
+                  <div className="width-3"></div>
+                  <div className="position-relative width-11">
                     <input
                       type="text"
-                      className="border-df color-text-888888 bg-color-fa border-radius-4 width-80 padding-3"
+                      className="border-df color-text-888888 bg-color-fa border-radius-4 text-align-center width-100 padding-3"
                       placeholder="No. of days"
                     />
-                    <AiFillCaretDown className="position-absolute down-arrow-icon color-text-888888" />
                   </div>
-                  <div className="d-flex justify-between align-center position-relative width-18">
+                  <div className="width-5"></div>
+                  <div className="d-flex justify-between align-center position-relative width-11">
                     <input
                       type="text"
-                      className="border-df bg-color-ff padding-5 border-radius-4 width-88"
+                      style={{maxWidth:"100%"}}
+                      className="border-df bg-color-ff padding-3 border-radius-4 text-align-center"
                       placeholder="Select date"
                       onFocus={(e) => (e.target.type = "date")}
                     />
                   </div>
-                  <div className="width-13 position-relative">
+                  <div className="width-5"></div>
+                  <div className="width-12 position-relative">
                     <select
                       className="form-select"
                       aria-label="Default select example"
                     >
-                      <option selected>Yet to start</option>
+                      <option>Yet to start</option>
                       <option>Active</option>
                       <option>Pending</option>
                       <option>Delayed</option>
@@ -225,21 +280,21 @@ function InnerTimeline() {
                     </select>
                     <AiFillCaretDown className="position-absolute arrow-icon right-13 top-8 color-text-888888" />
                   </div>
-                  <div className="width-20 remarks-field border-df border-radius-4">
+                  <div className="width-10"></div>
+                  <div className="width-14 remarks-field border-df bg-color-fa border-radius-4">
                     <textarea
                       rows="1"
-                      cols="17"
+                      cols="11"
                       style={{ resize: "none" }}
                       className="padding-3 bg-color-fa border-none"
                       placeholder="type something..."
                     />
                   </div> 
-                  <div style={{width:"3%"}} >
-                    <img src={minusCircelOutline} className="minus-icon" alt="minus-icon"/>
+                  <div className={`width-5 text-align-center ${hoverEffect===`img_${index+1}` ? "minus-icon-wrapper":"visiblity-none"}`}>
+                    <img src={minusCircelOutline} className="minus-icon width-30" alt="minus-icon"/>
                   </div>
                 </div>
-                {/* <div style={{ marginTop: "0%" }} className="ui divider"></div> */}
-                <hr style={{ marginTop: "2px",marginBottom:"0" }}/>
+                <hr style={{ marginTop: "2px",marginBottom:"0",margin: "0 5px" }}/>
               </>
             );
           })}
@@ -254,7 +309,7 @@ function InnerTimeline() {
           <div></div>
         </div>
       </div>
-      <div>
+      <div onClick={addMoreListItem}>
         <img className="add-more-item" src={addMoreItem} alt="add-more-item" />
       </div>
       {/* ///----open update modal--- */}
@@ -355,7 +410,7 @@ function InnerTimeline() {
                       <option  style={{color:"#BBB400"}}  value="2">PENDING</option>
                       <option  style={{color:"#D50000"}} value="3">DELAYED</option>
                     <option  style={{color:"#2BA400"}} value="3">COMPLETED</option> */}
-                  <option selected>Yet to start</option>
+                  <option >Yet to start</option>
                   <option>Active</option>
                   <option>Pending</option>
                   <option>Delayed</option>
@@ -385,7 +440,8 @@ function InnerTimeline() {
             </div>
           </div>
         </div>
-      </div>}
+      </div>
+      }
 
       {/* /// not updating anything item */}
       {/* <div className="main-modal-wrapper">
