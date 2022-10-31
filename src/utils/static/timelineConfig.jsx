@@ -15,4 +15,4 @@ export const monthList =
     "Sep",
     "Oct",
     "Nov",
-    "Dec"] 
+    "Dec" ];

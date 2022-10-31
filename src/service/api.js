@@ -1,7 +1,5 @@
 import axios from "axios";
 import { getToken } from "../utils";
-// import { AccessToken } from "../utils/static/timelineConfig";
-
 
 export const postReq = async (url, payload, headers) => {
   return await axios

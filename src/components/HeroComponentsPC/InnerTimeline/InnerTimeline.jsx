@@ -162,7 +162,7 @@ function InnerTimeline() {
         </div>
         <div className="d-flex justify-between align-center width-25">
           <div onClick={addMoreListItem}>
-            <img className="add-item" src={addItem} alt="add-item" />
+            <img className="add-item cursor-pointer" src={addItem} alt="add-item" />
           </div>
           <div>
             <img className="search-icon" src={searchIcon} alt="search-icon" />
@@ -214,7 +214,7 @@ function InnerTimeline() {
         <div className="width-5"></div>
       </div>
      
-      <div  style={{borderRadius:"12px",padding:"8px 0"}} className="border-radius-4 border-df">
+      <div  style={{borderRadius:"12px",padding:"8px 0"}} className="border-radius-4 border-df height-58">
         {listitem &&
           listitem.map((_, index) => {
             return (
@@ -223,6 +223,7 @@ function InnerTimeline() {
                   key={index}
                   draggable
                   onMouseOver={()=> imgHoverEffect(`img_${index+1}`)}
+                  onMouseOut={()=> imgHoverEffect(null)}
                   onDragStart={(e) => dragStart(e, index)}
                   onDragEnter={(e) => dragEnter(e, index)}
                   onDragEnd={arangeDropItem}
@@ -284,7 +285,7 @@ function InnerTimeline() {
                   <div className="width-14 remarks-field border-df bg-color-fa border-radius-4">
                     <textarea
                       rows="1"
-                      cols="11"
+                      cols="13"
                       style={{ resize: "none" }}
                       className="padding-3 bg-color-fa border-none"
                       placeholder="type something..."
@@ -298,7 +299,8 @@ function InnerTimeline() {
               </>
             );
           })}
-        <div className="d-flex justify-flex-start">
+
+        {/* <div className="d-flex justify-flex-start">
           <div className="width-3"></div>
           <div className="width-13">item1</div>
           <div className="width-18">22 sep 2022</div>
@@ -307,10 +309,10 @@ function InnerTimeline() {
           <div className="width-13">yet to start</div>
           <div className="width-18">compelete a day before</div>
           <div></div>
-        </div>
-      </div>
-      <div onClick={addMoreListItem}>
+        </div> */}
+      <div style={{marginLeft:"3%"}} onClick={addMoreListItem} className="cursor-pointer">
         <img className="add-more-item" src={addMoreItem} alt="add-more-item" />
+      </div>
       </div>
       {/* ///----open update modal--- */}
       {/* { readonlystatus && */}

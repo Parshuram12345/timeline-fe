@@ -18,7 +18,7 @@
 .side-navbar{
     top: 10vh;
     height: 90vh;
-    width:18%
+    width:18%;
 }
 .rightside-section{
         width: 80%;
@@ -222,6 +222,12 @@
 }
 .height-70{
     height: 70vh;
+}
+.height-58{
+    height: 58vh;
+}
+.height-60{
+    height: 60vh;
 }
 .height-40{
     height: 40vh;

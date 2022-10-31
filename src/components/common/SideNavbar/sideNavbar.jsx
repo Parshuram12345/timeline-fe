@@ -2,7 +2,7 @@ import React from 'react'
 
 function SideNavbar() {
   return (
-    <div className="side-navbar border-df">sideNavbar</div>
+    <div style={{borderTop:"none"}} className="side-navbar border-df">sideNavbar</div>
   )
 }
 
