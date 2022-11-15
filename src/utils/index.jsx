@@ -1,4 +1,4 @@
-import { BaseUrl, AccessToken, projectid, statusList, monthList } from './static/timelineConfig'
+import { BaseUrl, AccessToken, projectId, statusList, monthList,timelineId } from './static/timelineConfig'
 // console.log(localStorage.getItem("token"))
 export function getToken(){
    return localStorage.getItem("token") ? localStorage.getItem("token"):null
@@ -6,7 +6,8 @@ export function getToken(){
 export const data = {
    BaseUrl,
    AccessToken,
-   projectid,
+   projectId,
    statusList,
-   monthList
+   monthList,
+   timelineId
 }

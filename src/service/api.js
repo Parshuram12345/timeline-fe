@@ -2,6 +2,7 @@ import axios from "axios";
 import { getToken } from "../utils";
 
 export const postReq = async (url, payload, headers) => {
+  console.log(headers)
   return await axios
     .post(url, payload, {
       headers: {
@@ -44,8 +45,8 @@ export const  putReq = async (url, payload, headers) => {
 };
 
 //services for b2b site
-export const b2bGetReq = (url) => {
-  return axios
+export const b2bGetReq = async(url) => {
+  return await axios
     .get(url, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
@@ -57,8 +58,8 @@ export const b2bGetReq = (url) => {
     });
 };
 
-export const b2bPostReq = (url, payload, headers) => {
-  return axios
+export const b2bPostReq = async(url, payload, headers) => {
+  return await axios
     .post(url, payload, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
@@ -71,8 +72,8 @@ export const b2bPostReq = (url, payload, headers) => {
     });
 };
 
-export const b2bPutReq = (url, payload, headers) => {
-  return axios
+export const b2bPutReq = async(url, payload, headers) => {
+  return await axios
     .put(url, payload, {
       headers: {
         Authorization: `Bearer ${getToken()}`,

@@ -21,9 +21,9 @@
     width:18%;
 }
 .rightside-section{
-        width: 80%;
+        width:77vw;
         height: 90vh;
-        top:10vh
+        top:10vh;
 }
 .position-relative{
     position: relative;
@@ -223,8 +223,8 @@
 .height-70{
     height: 70vh;
 }
-.height-58{
-    height: 58vh;
+.height-63{
+    height: 63vh;
 }
 .height-60{
     height: 60vh;
@@ -247,12 +247,22 @@
 .divider-margin-3{
     margin:3px 0;
 }
+.margin-bottom-3{
+    margin-bottom: 3px;
+}
+.margin-bottom-8{
+    margin-bottom: 8px;
+}
 input:focus { 
     /* outline: none !important; */
     border-color: #3B5998 !important;
   }
-  ::-webkit-scrollbar {
-    display: none;
+body ::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+}
+.overflow-y{
+    overflow-y: auto;
 }
 textarea:focus { 
     outline: none !important;

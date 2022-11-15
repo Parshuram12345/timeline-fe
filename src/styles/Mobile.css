@@ -34,6 +34,9 @@
 .bg-color-fa{
     background-color: #FAFAFA;
 }
+.bg-color-ff{
+    background-color: #ffffff;
+}
 .border-df{
     border: 1px solid #DFDFDF;
 }
@@ -73,6 +76,9 @@
 .width-33{
     width: 33%;
 }
+.width-37{
+    width: 37%;
+}
 .width-18{
     width:18%
 }
@@ -87,6 +93,9 @@
 }
 .width-30{
     width:30%
+}
+.width-33{
+    width:33%
 }
 .width-35{
     width:35%
@@ -145,6 +154,9 @@
     align-items: left;
 }
 
+.height-65{
+    height: 65vh;
+}
 .h-fit-content{
     height: fit-content;
 }

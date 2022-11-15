@@ -1,0 +1,134 @@
+.allProjectListContainer {
+  width: 22vw;
+  height: 90vh;
+  border-right: 1px solid #a7a7a7;
+  overflow-y: scroll;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  font-weight: 500;
+  border-bottom: 1px solid #dfdfdf;
+  cursor: pointer;
+}
+
+.projectName {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.projectDetails {
+  font-size: 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  align-items: center;
+}
+
+.accordionIconText {
+  color: #333333;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  margin: 0.2rem 0;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.accordionIconText:hover {
+  background-color: #9d9d9d1a;
+}
+
+.accordionIconTextActive {
+  color: #333333;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  margin: 0.2rem 0;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 12px;
+  background: #9d9d9d1a;
+  font-size: 14px;
+}
+
+.statusSelect {
+  display: flex;
+  align-items: center;
+}
+.statusSelect select {
+  font-size: 10px;
+}
+
+.selectedProjHeaderActive {
+  pointer-events: none;
+  border-bottom: none !important;
+}
+.selectedProjHeaderActive button {
+  background-color: #e4e4e4 !important;
+}
+.selectedProjHeaderInactive button {
+  background-color: #ffffff !important;
+}
+
+.projectInitials {
+  height: 2.5rem;
+  width: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #7e7c7c;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  margin-right: 0.5rem;
+}
+
+.projectStatus {
+  font-size: 10px;
+}
+
+.discussionIconContainer {
+  background-color: #49dcfc;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.4rem;
+  margin: 0 0.5rem;
+  border-radius: 6px;
+}
+.mediaIconContainer {
+  background-color: #fcd449;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.4rem;
+  margin: 0 0.5rem;
+  border-radius: 6px;
+}
+.momIconContainer {
+  background-color: #ec53fa;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.4rem;
+  margin: 0 0.5rem;
+  border-radius: 6px;
+}
+.timelineIconContainer {
+  background-color: #08d729;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.4rem;
+  margin: 0 0.5rem;
+  border-radius: 6px;
+}

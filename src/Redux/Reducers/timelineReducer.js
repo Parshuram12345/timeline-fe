@@ -1,5 +1,6 @@
 const initialState = {
   timelineData: {},
+  timelineItem:{}
 };
 
 const timelineReducer = (state = initialState, action) => {
@@ -10,11 +11,11 @@ const timelineReducer = (state = initialState, action) => {
         timelineData: action.payload,
       };
 
-    // case "SAVE_TIMELINE_DATA":
-    //   return {
-    //     ...state,
-    //     savetimeline : action.payload,
-    //   };
+    case "GET_TIMELINE_ITEM":
+      return {
+        ...state,
+        timelineItem : action.payload,
+      };
 
     default:
       return state;
