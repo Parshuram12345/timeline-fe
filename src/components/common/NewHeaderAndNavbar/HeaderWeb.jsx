@@ -16,7 +16,7 @@ import { BiChevronDown } from "react-icons/bi";
 // import { handleLogout } from "../../../Redux/Actions/auth";
 import { confirmAlert } from "react-confirm-alert";
 import { Link } from "react-router-dom";
-import { fetchLeadsInCart } from "../../../Redux/Actions/headerAction";
+import { fetchLeadsInCart, fetchProfileData } from "../../../Redux/Actions/headerAction";
 import './HeaderandNav.css';
 import "./headerweb.css"
 
@@ -63,6 +63,7 @@ const HeaderWeb = () => {
 
   useEffect(() => {
     dispatch(fetchLeadsInCart(`Bearer ${authTok}`));
+    dispatch(fetchProfileData(`Bearer ${authTok}`));
   }, []);
 
   const [logoutShow, setLogoutShow] = useState(false);

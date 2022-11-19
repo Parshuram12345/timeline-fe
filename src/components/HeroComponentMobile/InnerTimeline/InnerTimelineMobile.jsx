@@ -1,4 +1,4 @@
-import React, { useState,useRef} from "react";
+import React, { useState, useRef } from "react";
 import "./InnerTimeline.css";
 // import { HiOutlineShare, HiOutlineMinusCircle } from "react-icons/hi";
 import { AiOutlineDelete, AiFillCaretDown } from "react-icons/ai";
@@ -52,7 +52,7 @@ const Data = [
   }
 ]
 
-function InnerTimelineMobile({list=Data}) {
+function InnerTimelineMobile({ list = Data }) {
   //---drag  & drop functionality----/// 
   const dragItem = useRef();
   const dragOverItem = useRef();
@@ -60,9 +60,9 @@ function InnerTimelineMobile({list=Data}) {
   const [itemflag, setItemflag] = useState(false);
   const [ghanttflag, setGhanttflag] = useState(false);
   const [openaddItem, setOpenaddItem] = useState(false);
-  const [updateEditItem, setUpdateEditItem]=useState(false)
-  const [updateReadItem, setUpdateReadItem]=useState(false);
-  const navigate =useNavigate();
+  const [updateEditItem, setUpdateEditItem] = useState(false)
+  const [updateReadItem, setUpdateReadItem] = useState(false);
+  const navigate = useNavigate();
   const [listitem, setListitem] = useState(list);
   const { statusList } = data;
   const { colorTimeline, downFillArrow, crossCloseIcon, timelinePlus, Ellipse_bg, doubleVector, hash, minusCircelOutline } = imageslist
@@ -78,8 +78,8 @@ function InnerTimelineMobile({list=Data}) {
   const openAddItemModal = (value) => {
     setOpenaddItem(value);
   };
-  
-  
+
+
   ///---on hover show the image ----///
   const imgHoverEffect = (id) => {
     setHoverEffect(id)
@@ -108,7 +108,6 @@ function InnerTimelineMobile({list=Data}) {
   const addMoreListItem = () => {
     setListitem((prev) => [...prev, prev.length++])
   }
-
   return (
     <div>
       <div className="main-wrapper-mobile">
@@ -119,7 +118,7 @@ function InnerTimelineMobile({list=Data}) {
           <span className="d-flex align-center color-text-888888 small-font-12">
             <FiChevronRight />
           </span>
-          <div className="color-text-888888 font-weight-500 small-font-10 cursor-pointer" onClick={()=>navigate("/")}>
+          <div className="color-text-888888 font-weight-500 small-font-10 cursor-pointer" onClick={() => navigate("/")}>
             Timeline
           </div>
           <span className="d-flex align-center color-text-888888 small-font-12">
@@ -158,7 +157,7 @@ function InnerTimelineMobile({list=Data}) {
               Ghantt Chart
             </div>
           </div>
-          <div style={{marginTop:"-4px"}} className="d-flex justify-flex-start align-center">
+          <div style={{ marginTop: "-4px" }} className="d-flex justify-flex-start align-center">
             <div className="color-text-888888"> View :</div>
             <select className="border-none">
               <option>Detailed</option>
@@ -204,22 +203,24 @@ function InnerTimelineMobile({list=Data}) {
           <div className="width-10"></div>
         </div>
         <div className="height-65 overflow-y">
-          { listitem && listitem.map(({itemName,startDate, endDate, days, remark, },index) => {
-            return <div 
-            key={index}
-            draggable
-            onMouseOver={() => imgHoverEffect(`img_${index + 1}`)}
-            onMouseOut={() => imgHoverEffect(null)}
-            onDragStart={(e) => dragStart(e, index)}
-            onDragEnter={(e) => dragEnter(e, index)}
-            onDragEnd={arangeDropItem}
-            className="d-flex justify-flex-start border-df border-radius-4 padding-5 divider-margin" onClick={() => setUpdateReadItem(true)}>
+          {listitem && listitem.map(({ itemName, startDate, endDate, days, remark, }, index) => {
+            return <div
+              key={index}
+              draggable
+              onMouseOver={() => imgHoverEffect(`img_${index + 1}`)}
+              onMouseOut={() => imgHoverEffect(null)}
+              onDragStart={(e) => dragStart(e, index)}
+              onDragEnter={(e) => dragEnter(e, index)}
+              onDragEnd={arangeDropItem}
+              onClick={() => setOpenaddItem(true)}
+              // onClick={() => setUpdateReadItem(true)}
+              className="d-flex justify-flex-start border-df border-radius-4 padding-5 divider-margin" >
               <div className={`width-15 ${hoverEffect === `img_${index + 1}` ? "minus-icon-wrapper" : "visiblity-none"}`}>
                 <img style={{ width: "2vw" }} className="" src={hash} alt="hash-icon" />
               </div>
               <div style={{ borderBottom: " 1px solid #DFDFDF", background: "#F6F6F6" }} className="width-30 color-text-888888 text-align-center">{itemName}</div>
               <div className="width-5"></div>
-              <div style={{fontWeight:"700"}} className="width-45 text-align-center color-text-000000">-</div>
+              <div style={{ fontWeight: "700" }} className="width-45 text-align-center color-text-000000">-</div>
               <div className="width-45 text-align-center color-text-000000 font-weight-400">-</div>
               <div className={`width-10 ${hoverEffect === `img_${index + 1}` ? "minus-icon-wrapper" : "visiblity-none"}`}>
                 <img style={{ width: "4vw" }} src={minusCircelOutline} className="minus-icon" alt="minus-icon" />
@@ -248,7 +249,7 @@ function InnerTimelineMobile({list=Data}) {
 
       {/* ///-----open add item modal----/// */}
       {openaddItem && (
-        <><div className="main-modal-add-item-mobile">
+        <div className="main-modal-add-item-mobile">
           <div className="modal-wrapper-add-item-mobile position-relative">
             <div
               className="close-icon-addItem position-absolute"
@@ -324,118 +325,116 @@ function InnerTimelineMobile({list=Data}) {
             </div>
           </div>
         </div>
-
-          {/* ////----update modal is read only-----//// */}
-         { updateReadItem && <div style={{ marginTop: "0%" }} className="main-modal-add-update-item-mobile">
-            <div className="modal-wrapper-add-item-mobile position-relative">
-              <div
-                className="close-icon-addItem position-absolute"
-                onClick={() => setUpdateReadItem(false)}
-              >
-                <img style={{ width: "5vw" }} src={crossCloseIcon} alt="close-icon" />
-              </div>
-              <div className="font-weight-500 font-size-16 add-item-container color-text-000000">
-                Add Item
-              </div>
-              <div
-                style={{ marginTop: "1%", marginBottom: "0" }}
-                className="ui divider"
-              ></div>
-              <div className="content main-content-update d-flex-col justify-between">
-                <div style={{ margin: "8% 0" }}>
-                  <label className="margin-bottom-5">Select start date</label>
-                  <div className="border-df padding-8 border-radius-4 width-100"> 
-                  18 sep 2022
-                  </div>
-                </div>
-                <div className="margin-bottom-8">
-                  <label className="margin-bottom-5">Select end date</label>
-                  <div className="border-df padding-8 border-radius-4 width-100"> 
-                  24 sep 2022
-                  </div>
-                </div>
-                <div style={{ marginBottom: "8%" }} >
-                  <label className="margin-bottom-5">Select Status</label>
-                  <div className="border-df bg-color-fa padding-8 border-radius-4 width-100">Active</div>
-                  <div className="d-flex align-center" style={{ marginTop: "3%" }}>
-                    <input type="checkbox" /> <span style={{ color: "#575757", marginLeft: "3%" }}>Change the status to complete</span>
-                  </div>
-                </div>
-                <div style={{ marginBottom: "53%" }}>
-                  <label className="margin-bottom-5">Write a remark</label>
-                  <textarea
-                    className="border-df bg-color-fa padding-5 border-radius-4 width-100 padding-8"
-                    rows="6"
-                    cols="40"
-                    placeholder="write a remark"
-                  ></textarea>
-                </div>
-                <div style={{ margin: "0 10px" }} className="actions">
-                  <div className="ui button submit-btn-additem" onClick={()=>setUpdateEditItem(true)}>
-                    Update Status
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>}
-          {/* ////----update modal is for edit & read only-----//// */}
-          { updateEditItem && <div style={{ marginTop: "0%" }} className="main-modal-add-update-item-mobile">
-            <div className="modal-wrapper-add-item-mobile position-relative">
-              <div
-                className="close-icon-addItem position-absolute"
-                onClick={() => setUpdateEditItem(false)}
-              >
-                <img style={{ width: "5vw" }} src={crossCloseIcon} alt="close-icon" />
-              </div>
-              <div className="font-weight-500 font-size-16 add-item-container color-text-000000">
-                Add Item
-              </div>
-              <div
-                style={{ marginTop: "1%", marginBottom: "0" }}
-                className="ui divider"
-              ></div>
-              <div className="content main-content-update d-flex-col justify-between">
-                <div style={{ margin: "8% 0" }}>
-                  <label className="margin-bottom-5">Select start date</label>
-                  <input
-                    type="date"
-                    className="border-df padding-8 border-radius-4 width-100"
-                    placeholder="Select Date" />
-                </div>
-                <div className="margin-bottom-8">
-                  <label className="margin-bottom-5">Select end date</label>
-                  <input
-                    type="date"
-                    className="border-df padding-8 border-radius-4 width-100"
-                    placeholder="Select Date" />
-                </div>
-                <div style={{ marginBottom: "12%" }} >
-                  <label className="margin-bottom-5">Select Status</label>
-                  <div className="border-df bg-color-fa padding-8 border-radius-4 width-100">Active</div>
-                  <div className="d-flex align-center" style={{ marginTop: "3%" }}>
-                    <input type="checkbox" /> <span style={{ color: "#575757", marginLeft: "3%" }}>Change the status to complete</span>
-                  </div>
-                </div>
-                <div style={{ marginBottom: "53%" }}>
-                  <label className="margin-bottom-5">Write a remark</label>
-                  <textarea
-                    className="border-df bg-color-fa padding-5 border-radius-4 width-100 padding-8"
-                    rows="6"
-                    cols="40"
-                    placeholder="write a remark"
-                  ></textarea>
-                </div>
-                <div style={{ margin: "0 10px" }} className="actions">
-                  <div className="ui button submit-btn-additem">
-                    Update Status
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>}
-        </>
-
       )}
+      {/* ////----update modal is read only-----//// */}
+      {updateReadItem && <div style={{ marginTop: "0%" }} className="main-modal-add-update-item-mobile">
+        <div className="modal-wrapper-add-item-mobile position-relative">
+          <div
+            className="close-icon-addItem position-absolute"
+            onClick={() => setUpdateReadItem(false)}
+          >
+            <img style={{ width: "5vw" }} src={crossCloseIcon} alt="close-icon" />
+          </div>
+          <div className="font-weight-500 font-size-16 add-item-container color-text-000000">
+            Add Item
+          </div>
+          <div
+            style={{ marginTop: "1%", marginBottom: "0" }}
+            className="ui divider"
+          ></div>
+          <div className="content main-content-update d-flex-col justify-between">
+            <div style={{ margin: "8% 0" }}>
+              <label className="margin-bottom-5">Select start date</label>
+              <div className="border-df padding-8 border-radius-4 width-100">
+                18 sep 2022
+              </div>
+            </div>
+            <div className="margin-bottom-8">
+              <label className="margin-bottom-5">Select end date</label>
+              <div className="border-df padding-8 border-radius-4 width-100">
+                24 sep 2022
+              </div>
+            </div>
+            <div style={{ marginBottom: "8%" }} >
+              <label className="margin-bottom-5">Select Status</label>
+              <div className="border-df bg-color-fa padding-8 border-radius-4 width-100">Active</div>
+              <div className="d-flex align-center" style={{ marginTop: "3%" }}>
+                <input type="checkbox" /> <span style={{ color: "#575757", marginLeft: "3%" }}>Change the status to complete</span>
+              </div>
+            </div>
+            <div style={{ marginBottom: "53%" }}>
+              <label className="margin-bottom-5">Write a remark</label>
+              <textarea
+                className="border-df bg-color-fa padding-5 border-radius-4 width-100 padding-8"
+                rows="6"
+                cols="40"
+                placeholder="write a remark"
+              ></textarea>
+            </div>
+            <div style={{ margin: "0 10px" }} className="actions">
+              <div className="ui button submit-btn-additem" onClick={() => setUpdateEditItem(true)}>
+                Update Status
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>}
+      {/* ////----update modal is for edit & read only-----//// */}
+      {updateEditItem && <div style={{ marginTop: "0%" }} className="main-modal-add-update-item-mobile">
+        <div className="modal-wrapper-add-item-mobile position-relative">
+          <div
+            className="close-icon-addItem position-absolute"
+            onClick={() => setUpdateEditItem(false)}
+          >
+            <img style={{ width: "5vw" }} src={crossCloseIcon} alt="close-icon" />
+          </div>
+          <div className="font-weight-500 font-size-16 add-item-container color-text-000000">
+            Add Item
+          </div>
+          <div
+            style={{ marginTop: "1%", marginBottom: "0" }}
+            className="ui divider"
+          ></div>
+          <div className="content main-content-update d-flex-col justify-between">
+            <div style={{ margin: "8% 0" }}>
+              <label className="margin-bottom-5">Select start date</label>
+              <input
+                type="date"
+                className="border-df padding-8 border-radius-4 width-100"
+                placeholder="Select Date" />
+            </div>
+            <div className="margin-bottom-8">
+              <label className="margin-bottom-5">Select end date</label>
+              <input
+                type="date"
+                className="border-df padding-8 border-radius-4 width-100"
+                placeholder="Select Date" />
+            </div>
+            <div style={{ marginBottom: "12%" }} >
+              <label className="margin-bottom-5">Select Status</label>
+              <div className="border-df bg-color-fa padding-8 border-radius-4 width-100">Active</div>
+              <div className="d-flex align-center" style={{ marginTop: "3%" }}>
+                <input type="checkbox" /> <span style={{ color: "#575757", marginLeft: "3%" }}>Change the status to complete</span>
+              </div>
+            </div>
+            <div style={{ marginBottom: "53%" }}>
+              <label className="margin-bottom-5">Write a remark</label>
+              <textarea
+                className="border-df bg-color-fa padding-5 border-radius-4 width-100 padding-8"
+                rows="6"
+                cols="40"
+                placeholder="write a remark"
+              ></textarea>
+            </div>
+            <div style={{ margin: "0 10px" }} className="actions">
+              <div className="ui button submit-btn-additem">
+                Update Status
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>}
+
 
       {/* <div className="timeline-height-62">
         <div className="padding-3 border-df border-radius-4">

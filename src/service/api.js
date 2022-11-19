@@ -2,7 +2,6 @@ import axios from "axios";
 import { getToken } from "../utils";
 
 export const postReq = async (url, payload, headers) => {
-  console.log(headers)
   return await axios
     .post(url, payload, {
       headers: {
@@ -20,6 +19,7 @@ export const getReq = async (url, headers) => {
   return await axios
     .get(url, {
       headers: {
+        "Access-Control-Allow-Origin": "*",
         Authorization: getToken(),
         ...headers,
       },

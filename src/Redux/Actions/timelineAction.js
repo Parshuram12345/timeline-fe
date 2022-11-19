@@ -27,15 +27,10 @@ export function getTimelinedata(projectId) {
     }
   }
 }
-export function createTimelineData(projectId, timelinename) {
-  const bodydata = {
-    timelineName: timelinename,
-    projectId: projectId
-  }
+export function createTimelineData(bodydata,projectId) {
   return async (dispatch, getState) => {
     const res = await postReq(`${BaseUrl}/api/timeline/addEditTimeline`, bodydata)
     if (res && !res.error) {
-      // console.log(res)
       dispatch(getTimelinedata(projectId));
     } else {
       console.log(res.error);
@@ -52,7 +47,7 @@ export function handleSingleDeleteTimeline(singleDeleteTimelineid, projectId) {
   return async (dispatch, getState) => {
     const res = await postReq(`${BaseUrl}/api/timeline/addEditTimeline`, bodydata)
     if (res && !res.error) {
-      console.log(res)
+      // console.log(res)
       dispatch(getTimelinedata(projectId));
     } else {
       console.log(res.error);

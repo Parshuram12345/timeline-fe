@@ -9,12 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import "./mainSection.css";
 import { data } from "../../../utils";
 import { imageslist } from './../../../utils/images/index';
-import { createTimelineData, getTimelinedata,handleSingleDeleteTimeline} from "../../../Redux/Actions/timelineAction";
+import { createTimelineData, getTimelinedata, getTimelineItems, handleSingleDeleteTimeline } from "../../../Redux/Actions/timelineAction";
+import { timelineId } from "../../../utils/static/timelineConfig";
+import axios from "axios";
 function MainSection() {
   const dispatch = useDispatch()
   const appState = useSelector((state) => state.timelineReducer)
-  const { timelineData } = appState;
-  // console.log(timelineData.data[timelineData?.data?.length-1])
+  const { timelineData, timelineItem } = appState;
+  // console.log(timelineData?.data[timelineData?.data?.length-1]?._id)
   console.log(timelineData.data)
   const [opeTimelineModal, setOpenTimelineModal] = useState(false);
   const [draftsflag, setDraftsflag] = useState(false);
@@ -27,13 +29,19 @@ function MainSection() {
   const [singleDeleteTimeline, setSingleDeleteTimeline] = useState("")
   const navigate = useNavigate();
   const { AccessToken, BaseUrl, projectId, monthList } = data;
-  const { crossCloseIcon, Ellipse_bg, threeDots, colorTimeline, timelineIcon,downEmptyarrow } = imageslist
+  const { crossCloseIcon, Ellipse_bg, threeDots, colorTimeline, timelineIcon, downEmptyarrow } = imageslist
   const dummayarr = Array.from({ length: 2 })
 
   ///---go to InnerPage of Timeline----///
   const goToInnerTimeline = (timelineId) => {
     navigate(`/innertimeline/${timelineId}`);
   };
+
+  ///--go to shared timeline page of timeline----///
+  const gotoSharedTimeline = (timelineId) => {
+    navigate(`/sharedtimeline/${timelineId}`)
+  }
+
   ///---create timeline ----///
   const handleCreateTimeline = (value) => {
     setOpenTimelineModal(value);
@@ -41,7 +49,7 @@ function MainSection() {
       setTimelineName("");
     }
   }
-  
+
   ///----draftsdocs -----///
   const handleDraftsDocs = () => {
     setDraftsflag(false);
@@ -51,6 +59,16 @@ function MainSection() {
   const handleSentDocs = () => {
     setDraftsflag(true);
     setSentflag(false);
+  }
+
+  ///---remove the zero the when month number is less than 10-----///
+  const makeMonthFormat = (str) => {
+    if (str.charAt(0) === "0") {
+      return monthList[str.charAt(1)]
+    }
+    else {
+      return monthList[str]
+    }
   }
 
   ///----open single delete timeline modal -----///
@@ -64,10 +82,10 @@ function MainSection() {
     }
   }
   // ///------delete the timeline------////
-    const handleDeleteTimeline=()=>{
-      setOpendeleteModal(false)
-      dispatch(handleSingleDeleteTimeline(singleDeleteTimeline,projectId))
-    }
+  const handleDeleteTimeline = () => {
+    setOpendeleteModal(false)
+    dispatch(handleSingleDeleteTimeline(singleDeleteTimeline, projectId))
+  }
 
   ///---play with error state
   if (timelineName && timelineNameError) setTimelineNameError(false);
@@ -75,10 +93,21 @@ function MainSection() {
   ///---read the mom and edit it---///
   async function createTimeLine() {
     if (timelineName) {
+      const bodydata = {
+        timelineName: timelineName,
+        projectId: projectId
+      }
+      // dispatch(createTimelineData(bodydata,projectId))
+      const response = await axios({
+        method: "post",
+        url: `${BaseUrl}/api/timeline/addEditTimeline`,
+        headers: { Authorization: AccessToken },
+        data: bodydata
+      })
+      if (response?.data) {
+        navigate(`/innertimeline/${response?.data?._id}`)
+      }
       setOpenTimelineModal(false)
-      dispatch(createTimelineData(projectId, timelineName))
-      navigate(`/innertimeline/${timelineData.data[timelineData.data.length-1]._id}`)
-      // console.log(timelineDraftlist)
     } else {
       console.log("enter the timeline name")
       setTimelineNameError(true)
@@ -86,12 +115,16 @@ function MainSection() {
   }
   useEffect(() => {
     dispatch(getTimelinedata(projectId))
+    dispatch(getTimelineItems(timelineId))
   }, [])
 
   useEffect(() => {
     setTimelineDraftlist(timelineData?.data?.filter((item) => item.isDraft === true))
     setTimelineSentlist(timelineData?.data?.filter((item) => item.isDraft === false))
-  }, [timelineData])
+
+    //--get timeline item---///
+
+  }, [timelineData, timelineItem])
   return (
     <div className="main-wrapper">
       {/* ///------modal code for create timeline name */}
@@ -114,8 +147,8 @@ function MainSection() {
                 onChange={(e) => setTimelineName(e.target.value)}
               />
             </div>
-            {timelineNameError && <div style={{ color: "red", fontSize: "10px", paddingLeft: "7px" }}>Write the timeline</div>}
-            <div className="actions">
+            {timelineNameError && <div style={{ color: "red", fontSize: "12px", paddingLeft: "7px" }}>Write the timeline</div>}
+            <div style={{ marginTop: "1rem" }} className="actions">
               <div className="ui button submit-btn" onClick={() => createTimeLine()}>
                 submit
               </div>
@@ -130,12 +163,10 @@ function MainSection() {
             <div className="content">
               <p className="notice-text"> Are you sure you want to delete this?</p>
             </div>
-            <div style={{ marginTop: "20px" }} className="actions">
+            <div style={{ marginTop: "20px", width: "10rem" }} className="actions d-flex">
               <div
                 className="ui button yes-btn"
                 onClick={() => handleDeleteTimeline()}
-                // onClick={() => handleSingleDeleteTimeline()}
-                // onClick={() => dispatch(handleSingleDeleteTimeline(singleDeleteTimeline,projectId))}
               >
                 Yes
               </div>
@@ -170,7 +201,7 @@ function MainSection() {
           Create new
         </button>
       </div>
-      <div className="d-flex width-12 justify-between">
+      <div className="d-flex width-10 justify-between">
         <div
           className={`font-weight-500 ${!draftsflag ? "drafts-tab" : "sents-tab"
             }`}
@@ -187,7 +218,6 @@ function MainSection() {
         </div>
       </div>
       <div style={{ marginTop: "0%" }} className="ui divider"></div>
-
       {!draftsflag ?
         (timelineDraftlist?.length === 0 ? <div className="timeline-area d-flex-col align-center justify-center font-weight-500 m-auto">
           <div className="position-relative">
@@ -264,10 +294,10 @@ function MainSection() {
             </div>
           </div>)
       }
-      <div>
+      <div className="timelines-wrapper">
         {!draftsflag ?
           (timelineDraftlist?.length > 0 &&
-            timelineDraftlist?.map(({ timelineName, createdAt, _id }, index) => {
+            timelineDraftlist?.map(({ timelineName, createdAt, timelineStartDate, timelineEndDate, _id }, index) => {
               return (
                 <div
                   key={_id}
@@ -275,7 +305,7 @@ function MainSection() {
                 >
                   <div
                     className="timeline-content-wrapper d-flex justify-flex-start cursor-pointer"
-                    onClick={()=>goToInnerTimeline(_id)}
+                    onClick={() => goToInnerTimeline(_id)}
                   >
                     <div className="width-6">
                       <img
@@ -286,10 +316,12 @@ function MainSection() {
                     </div>
                     <div className="width-15">{timelineName}</div>
                     <div className="width-19">{createdAt &&
-                      `${createdAt?.substring(8, 10)} ${monthList[createdAt?.substring(5, 7
-                      )]} ${createdAt?.substring(0, 4)}`}</div>
-                    <div className="width-25">{index + 3} Sep 2022</div>
-                    <div className="width-24">{index + 1} Nov 2022</div>
+                      `${createdAt?.substring(8, 10)} ${makeMonthFormat(createdAt?.substring(5, 7
+                      ))} ${createdAt?.substring(0, 4)}`}</div>
+                    <div className={`width-25  ${!timelineStartDate ? "padding-left-50 font-weight-500" :""}`}>{timelineStartDate ? `${timelineStartDate?.substring(8, 10)} ${makeMonthFormat(timelineStartDate?.substring(5, 7
+                    ))} ${timelineStartDate?.substring(0, 4)}` : "-"}</div>
+                    <div className={`width-24 ${!timelineEndDate ? "padding-left-50 font-weight-400" :""}`}>{timelineEndDate ? `${timelineEndDate?.substring(8, 10)} ${makeMonthFormat(timelineEndDate?.substring(5, 7
+                    ))} ${timelineEndDate?.substring(0, 4)}` : "-"}</div>
                     <div className="status-container width-15">
                       Yet to start
                     </div>
@@ -306,14 +338,15 @@ function MainSection() {
                         <img src={threeDots} alt="threedots" />
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
-                        <Dropdown.Item>
+                        {/* <Dropdown.Item>
                           <HiOutlineShare className="share-icon" />
                           Share
-                        </Dropdown.Item>
-                        <Dropdown.Item>
+                        </Dropdown.Item> */}
+                        {/* <Dropdown.Item>
                           <FiEdit2 className="share-icon" />
                           Edit
                         </Dropdown.Item>
+                      */}
                         <Dropdown.Item onClick={() => handleTimelineDeleteModal(true, _id, timelineName)}>
                           <AiOutlineDelete className="share-icon" />
                           Delete
@@ -325,15 +358,16 @@ function MainSection() {
               );
             })) :
           (timelineSentlist?.length > 0 &&
-            timelineSentlist?.map(({ timelineName, createdAt, _id }, index) => {
+            timelineSentlist?.map(({ timelineName, createdAt, timelineStartDate, timelineEndDate, _id }, index) => {
               return (
                 <div
                   key={_id}
                   className="d-flex align-center justify-between border-radius-4 border-df divider-margin-8"
                 >
                   <div
+                    onClick={() => gotoSharedTimeline(_id)}
                     className="timeline-content-wrapper d-flex justify-flex-start cursor-pointer"
-                    onClick={goToInnerTimeline}
+                  // onClick={goToInnerTimeline}
                   >
                     <div className="width-6">
                       <img
@@ -346,8 +380,10 @@ function MainSection() {
                     <div className="width-19">{createdAt &&
                       `${createdAt?.substring(8, 10)} ${monthList[createdAt?.substring(5, 7
                       )]} ${createdAt?.substring(0, 4)}`}</div>
-                    <div className="width-25">{index + 30} Sep 2022</div>
-                    <div className="width-24">{index + 1} Nov 2022</div>
+                    <div className="width-25">{timelineStartDate ? `${timelineStartDate?.substring(8, 10)} ${makeMonthFormat(timelineStartDate?.substring(5, 7
+                    ))} ${timelineStartDate?.substring(0, 4)}` : "-"}</div>
+                    <div className="width-24">{timelineEndDate ? `${timelineEndDate?.substring(8, 10)} ${makeMonthFormat(timelineEndDate?.substring(5, 7
+                    ))} ${timelineEndDate?.substring(0, 4)}` : "-"}</div>
                     <div className="status-container width-15">
                       Yet to start
                     </div>
@@ -364,18 +400,18 @@ function MainSection() {
                         <img src={threeDots} alt="threedots" />
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
-                        <Dropdown.Item>
+                        {/* <Dropdown.Item>
                           <HiOutlineShare className="share-icon" />
                           Share
                         </Dropdown.Item>
-                        {/* <Dropdown.Item>
-                            <FiEdit2 className="share-icon" />
-                            Edit
-                          </Dropdown.Item>
-                          <Dropdown.Item onClick={()=>handleTimelineDeleteModal(true,_id,name)}>
-                            <AiOutlineDelete className="share-icon" />
-                             Delete
-                          </Dropdown.Item> */}
+                        <Dropdown.Item>
+                          <FiEdit2 className="share-icon" />
+                          Edit
+                        </Dropdown.Item> */}
+                        <Dropdown.Item onClick={() => handleTimelineDeleteModal(true, _id, timelineName)}>
+                          <AiOutlineDelete className="share-icon" />
+                          Delete
+                        </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
                   </div>

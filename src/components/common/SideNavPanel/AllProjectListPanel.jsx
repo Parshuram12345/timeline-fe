@@ -17,7 +17,7 @@ const AllProjectListPanel =({ socket }) => {
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
   const {projectId} = useParams();
-  console.log(projectId)
+  // console.log(projectId)
   const location = useLocation();
   const projectList = useSelector((state) => state.addToCartReducer.projectList);
   const overRef = useRef(null);
