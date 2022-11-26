@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import "./SharedTimeline.css"
-import { HiOutlineShare, HiOutlineMinusCircle } from "react-icons/hi";
-import { AiOutlineDelete, AiFillCaretDown } from "react-icons/ai";
-import { FiChevronRight, FiEdit2 } from "react-icons/fi";
-import { Dropdown } from "react-bootstrap";
+import { FiChevronRight } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-// import { BaseUrl, timelineId } from "../../../utils/static/timelineConfig";
+import axios from 'axios';
 import { data } from "../../../utils";
 import { imageslist } from "./../../../utils/images";
 import { getTimelineItems, getTimelinedata, addEditItems } from "../../../Redux/Actions/timelineAction";
+import Demo from '../GanttChart/GhanttChart';
 
 function SharedTimeline() {
   const dispatch = useDispatch()
@@ -22,7 +20,8 @@ function SharedTimeline() {
   const [editItem, setEditItem] = useState(false) ///---edit item status
   const [start, setStart] = useState("")
   const [end, setEnd] = useState("")
-  const { monthList, statusCode, projectId } = data;
+  const [designerName, setDesignerName] = useState("")
+  const { monthList, statusCode, projectId,BaseUrl,AccessToken} = data;
   const { crossCloseIcon } = imageslist;
   const [timelineName, setTimelineName] = useState({})
   const [timelineSentItems, setTimelineSentItems] = useState([])
@@ -51,7 +50,7 @@ function SharedTimeline() {
     }
   }
 
-  console.log(timelineEditItem)
+  // console.log(timelineEditItem)
   let updateitem = [...timelineEditItem]
 
   ///----get the diff of days btw two selected days----///
@@ -104,6 +103,7 @@ function SharedTimeline() {
     }
     console.log(bodydata)
     dispatch(addEditItems(timelineId, bodydata))
+    setEditItem(false)
   }
 
   ///---remove the zero the when month number is less than 10-----///
@@ -155,9 +155,30 @@ function SharedTimeline() {
     setEditItem(value)
   }
 
+   ///---get designer project ---////
+   async function getClientProject(projectId) {
+    return await axios.get(
+      `${BaseUrl}/api/projects/getProjects?projectId=${projectId}`,
+      {
+        headers: {
+          Authorization: AccessToken,
+        }
+      }
+    );
+  }
+
   useEffect(() => {
     dispatch(getTimelinedata(projectId))
     dispatch(getTimelineItems(timelineId))
+
+     //---get designer name from client data----///
+     getClientProject(projectId)
+     .then((res) => {
+       setDesignerName(res.data.projects[0].name)
+     })
+     .catch((error) => {
+       console.error(error);
+     });
   }, [])
 
 
@@ -174,20 +195,18 @@ function SharedTimeline() {
       {openUpdate && <div className="main-modal-wrapper">
         <div className="modal-wrapper-pc position-relative">
           <div className="padding-12 color-text-000000 font-weight-400 font-size-16">{timelineSelectedItem?.itemName}</div>
-          <img onClick={() => openReadUpdateModal(false)} className="closeicon position-absolute" src={crossCloseIcon} alt="close-icon" />
+          <img onClick={() => openReadUpdateModal(false)} className="closeicon position-absolute cursor-pointer" src={crossCloseIcon} alt="close-icon" />
           <div style={{ margin: "0%" }} className="ui divider"></div>
           <div className="content padding-12">
             <label className="label-text margin-bottom-3">Start Date</label>
             <div style={{ paddingLeft: "10px" }} className="width-100 border-df border-radius-4 bg-color-fa padding-5 margin-bottom-8">{`${timelineSelectedItem?.startDate?.substring(8, 10)} ${makeMonthFormat(timelineSelectedItem?.startDate?.substring(5, 7))
               } ${timelineSelectedItem?.startDate?.substring(0, 4)}`}</div>
-            {/* <label className="label-text margin-bottom-3">Days</label>
-            <div style={{ paddingLeft: "10px" }} className="width-100 border-df border-radius-4 bg-color-fa padding-5 margin-bottom-8">9 days</div> */}
             <label className="label-text margin-bottom-3">End Date</label>
             <div style={{ paddingLeft: "10px" }} className="width-100 border-df border-radius-4 bg-color-fa padding-5 margin-bottom-8">{`${timelineSelectedItem?.endDate?.substring(8, 10)} ${makeMonthFormat(timelineSelectedItem?.endDate?.substring(5, 7))
               } ${timelineSelectedItem?.endDate?.substring(0, 4)}`}</div>
-            <div className="d-flex justify-flex-start align-center divider-margin-3">
+            <div className="d-flex justify-flex-start align-center margin-bottom-8">
               <label className="label-text width-25">Satus</label>
-              <div style={{ paddingLeft: "10px" }} className="width-100 font-weight-400 border-df border-radius-4 bg-color-fa padding-5 margin-bottom-8">{statusCode[timelineSelectedItem?.status]}</div>
+              <div style={{ paddingLeft: "10px" }} className="width-100 font-weight-400 border-df border-radius-4 bg-color-fa padding-5">{statusCode[timelineSelectedItem?.status]}</div>
             </div>
             <label className="label-text divider-margin-3">Reason</label>
             <div style={{ paddingLeft: "10px" }} className="show-remarks divider-margin-3 color-text-000000 font-weight-400">{timelineSelectedItem?.remarks[timelineSelectedItem?.remarks?.length-1]}</div>
@@ -207,11 +226,11 @@ function SharedTimeline() {
       {editItem && <div className="main-modal-wrapper">
         <div className="modal-wrapper-pc position-relative">
           <div className="padding-12 color-text-000000 font-weight-400 font-size-16">
-            {timelineSelectedItem?.itemName}
+            {timelineEditItem[0]?.itemName}
           </div>
           <img
             onClick={() => openEditItemModal(false)}
-            className="closeicon position-absolute"
+            className="closeicon position-absolute cursor-pointer"
             src={crossCloseIcon}
             alt="close-icon"
           />
@@ -228,13 +247,6 @@ function SharedTimeline() {
                 onChange={(e) => handleChangefield(e)}
               />
             </div>
-            {/* <label className="label-text">Days</label>
-            <div
-              style={{ paddingLeft: "10px" }}
-              className="width-100 border-df border-radius-4 padding-5 margin-bottom-8 color-text-000000"
-            >
-              9 days
-            </div> */}
             <label className="label-text">End Date</label>
             <div className="width-100 border-df border-radius-4 padding-5 margin-bottom-8">
               <input style={{ paddingLeft: "10px" }}
@@ -248,32 +260,13 @@ function SharedTimeline() {
               />
             </div>
             <div
-              className="d-flex justify-flex-start align-center divider-margin-3"
+              className="d-flex justify-flex-start align-center "
             >
               <label className="label-text width-25">Status</label>
-              {/* <div
-                className="position-relative"
-                style={{ color: "#3B5998", width: "54%" }}
-              >
-                <select name="status" className="form-select"
-                // onChange={handleSelectStatus}
-                >
-                  <option  style={{color:"#888888"}} selected>Yet to start</option>
-                      <option style={{color:"#3B5998"}} value="1">ACTIVE</option>
-                      <option  style={{color:"#BBB400"}}  value="2">PENDING</option>
-                      <option  style={{color:"#D50000"}} value="3">DELAYED</option>
-                    <option  style={{color:"#2BA400"}} value="3">COMPLETED</option>
-                  <option>Yet to start</option>
-                  <option>ACTIVE</option>
-                  <option>PENDING</option>
-                  <option>DELAYED</option>
-                  <option>COMPLETED</option>
-                </select>
-                <AiFillCaretDown className="position-absolute arrow-icon right-13 top-8 color-text-888888" />
-              </div> */}
-              <div style={{ paddingLeft: "10px" }} className="width-100 font-weight-400 border-df border-radius-4 bg-color-fa padding-5 margin-bottom-8">{statusCode[timelineSelectedItem?.status]}</div>
+              <div style={{ paddingLeft: "10px" }} className="width-100 font-weight-400 border-df border-radius-4 bg-color-fa padding-5 ">{statusCode[timelineSelectedItem?.status]}</div>
             </div>
-            <div className="d-flex align-center" style={{ marginLeft: "20%" }}>
+            <div className="d-flex align-center divider-margin-3
+             margin-bottom-8" style={{ marginLeft: "20%" }}>
               <input type="checkbox" /><span style={{ color: "#575757", marginLeft: "3%" }}>Change the status to complete</span>
             </div>
             <label className="label-text divider-margin-3">Reason</label>
@@ -303,8 +296,8 @@ function SharedTimeline() {
       </div>
       }
       <div className="d-flex align-center justify-between width-fit-content divider-margin">
-        <div className="small-font-12 color-text-888888">
-          Ashok rathi residence
+        <div className="small-font-12 color-text-888888 cursor-pointer">
+          {designerName}
         </div>
         <span className="d-flex align-center color-text-888888 font-size-14">
           <FiChevronRight />
@@ -324,12 +317,12 @@ function SharedTimeline() {
       </div>
       <div className="d-flex justify-between align-center">
         <div className="timeline-head font-weight-500">{timelineName?.timelineName}</div>
-        <div
-          className="createNew-btn-web small-font-12 font-weight-400 text-align-center bg-color border-radius-4"
+        {/* <div
+          className="createNew-btn-web small-font-12 font-weight-400 text-align-center bg-color border-radius-4 cursor-pointer"
           onClick={() => navigate(`/innertimeline/${timelineId}`)}
         >
           Create new
-        </div>
+        </div> */}
       </div>
       <div style={{ marginTop: "15px" }} className="d-flex justify-between align-center">
         <div className="d-flex width-15 justify-between">
@@ -350,7 +343,7 @@ function SharedTimeline() {
         </div>
       </div>
       <div style={{ marginTop: "0%" }} className="ui divider"></div>
-      <div className="item-header-wrapper d-flex justify-flex-start color-text-444444 font-weight-400 bg-color-fa border-df">
+      { !itemsflag && <div className="item-header-wrapper d-flex justify-flex-start color-text-444444 font-weight-400 bg-color-fa border-df">
         <div className="width-3"></div>
         <div className="width-13 small-font-12">Item name</div>
         <div className="width-13 small-font-12">Start Date</div>
@@ -358,8 +351,8 @@ function SharedTimeline() {
         <div className="width-13 small-font-12">End Date</div>
         <div className="width-12 small-font-12">Status</div>
         <div className="width-14 small-font-12">Remark</div>
-      </div>
-      <div className="bg-color-fa timeline-item-container border-df">
+      </div>}
+      { !itemsflag && <div className="bg-color-fa timeline-item-container border-df height-63 overflow-y">
         {timelineSentItems && timelineSentItems.map(({ itemName, startDate, endDate, days, status, _id, remarks }, index) => {
           return <div key={index} onClick={() => openReadUpdateModal(true, _id)}>
             <div style={{ borderBottom: "1px solid #DFDFDF" }} className="d-flex justify-flex-start bg-color-ff item-row-wrapper">
@@ -375,7 +368,11 @@ function SharedTimeline() {
             </div>
           </div>
         })}
+      </div>}
+      {itemsflag && <div className="border-df border-radius-4 height-65 overflow-y">
+         <Demo timelineItems={timelineSentItems}/>
       </div>
+      }
     </div>
   );
 }

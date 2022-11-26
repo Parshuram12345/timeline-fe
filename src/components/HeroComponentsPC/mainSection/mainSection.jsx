@@ -10,14 +10,11 @@ import "./mainSection.css";
 import { data } from "../../../utils";
 import { imageslist } from './../../../utils/images/index';
 import { createTimelineData, getTimelinedata, getTimelineItems, handleSingleDeleteTimeline } from "../../../Redux/Actions/timelineAction";
-import { timelineId } from "../../../utils/static/timelineConfig";
 import axios from "axios";
 function MainSection() {
   const dispatch = useDispatch()
   const appState = useSelector((state) => state.timelineReducer)
   const { timelineData, timelineItem } = appState;
-  // console.log(timelineData?.data[timelineData?.data?.length-1]?._id)
-  console.log(timelineData.data)
   const [opeTimelineModal, setOpenTimelineModal] = useState(false);
   const [draftsflag, setDraftsflag] = useState(false);
   const [sentflag, setSentflag] = useState(false);
@@ -27,11 +24,10 @@ function MainSection() {
   const [timelineDraftlist, setTimelineDraftlist] = useState([])
   const [timelineSentlist, setTimelineSentlist] = useState([])
   const [singleDeleteTimeline, setSingleDeleteTimeline] = useState("")
+  const [designerName, setDesignerName] = useState("")
   const navigate = useNavigate();
-  const { AccessToken, BaseUrl, projectId, monthList } = data;
-  const { crossCloseIcon, Ellipse_bg, threeDots, colorTimeline, timelineIcon, downEmptyarrow } = imageslist
-  const dummayarr = Array.from({ length: 2 })
-
+  const { AccessToken, BaseUrl, projectId, monthList, statusCode, timelineId } = data;
+  const { crossCloseIcon, Ellipse_bg, threeDots, colorTimeline, timelineIcon, longline } = imageslist
   ///---go to InnerPage of Timeline----///
   const goToInnerTimeline = (timelineId) => {
     navigate(`/innertimeline/${timelineId}`);
@@ -87,6 +83,17 @@ function MainSection() {
     dispatch(handleSingleDeleteTimeline(singleDeleteTimeline, projectId))
   }
 
+  ///---add three dots for title after limit out----///
+  function add3dotsItemName(title) {
+    let dots = "..";
+    let limit = 21;
+    if (title.length > limit) {
+      return title.substring(0, limit) + dots;
+    } else {
+      return title;
+    }
+  }
+
   ///---play with error state
   if (timelineName && timelineNameError) setTimelineNameError(false);
 
@@ -113,9 +120,30 @@ function MainSection() {
       setTimelineNameError(true)
     }
   }
+
+  ///---get designer project ---////
+  async function getClientProject(projectId) {
+    return await axios.get(
+      `${BaseUrl}/api/projects/getProjects?projectId=${projectId}`,
+      {
+        headers: {
+          Authorization: AccessToken,
+        }
+      }
+    );
+  }
+
   useEffect(() => {
     dispatch(getTimelinedata(projectId))
-    dispatch(getTimelineItems(timelineId))
+    dispatch(getTimelineItems(timelineId));
+    //---get designer name from client data----///
+    getClientProject(projectId)
+      .then((res) => {
+        setDesignerName(res.data.projects[0].name)
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, [])
 
   useEffect(() => {
@@ -129,12 +157,12 @@ function MainSection() {
     <div className="main-wrapper">
       {/* ///------modal code for create timeline name */}
       {opeTimelineModal && (
-        <div className="main-modal-wrapper">
-          <div className="modal-wrapper position-relative">
+        <div style={{ background: "#00000050" }} className="main-modal-wrapper">
+          <div className="modal-wrapper-timeline position-relative">
             <div className="content">
               <p className="notice-text">Write the Timeline name</p>
               <img
-                className="position-absolute close-icon"
+                className="position-absolute close-icon cursor-pointer"
                 onClick={() => handleCreateTimeline(false)}
                 src={crossCloseIcon}
                 alt="cross-icon"
@@ -149,7 +177,7 @@ function MainSection() {
             </div>
             {timelineNameError && <div style={{ color: "red", fontSize: "12px", paddingLeft: "7px" }}>Write the timeline</div>}
             <div style={{ marginTop: "1rem" }} className="actions">
-              <div className="ui button submit-btn" onClick={() => createTimeLine()}>
+              <div className="ui button submit-btn-timeline" onClick={() => createTimeLine()}>
                 submit
               </div>
             </div>
@@ -158,8 +186,8 @@ function MainSection() {
       )}
       {/* modal for delete timeline */}
       {opendeleteModal && (
-        <div className="main-modal-wrapper">
-          <div className="modal-wrapper">
+        <div style={{ background: "#00000050" }} className="main-modal-wrapper">
+          <div className="modal-wrapper-delete">
             <div className="content">
               <p className="notice-text"> Are you sure you want to delete this?</p>
             </div>
@@ -183,7 +211,7 @@ function MainSection() {
       {/* /// */}
       <div className="d-flex align-center justify-between width-fit-content divider-margin">
         <div className="small-font-12 color-text-888888">
-          Ashok rathi residence
+          {designerName}
         </div>
         <span className="d-flex align-center color-text-888888 font-size-14">
           <FiChevronRight />
@@ -195,7 +223,7 @@ function MainSection() {
       <div className="d-flex justify-between align-center divider-margin">
         <div className="timeline-head font-weight-500 width-100">Timeline</div>
         <button
-          className="timeline-button border-radius-4"
+          className="timeline-button border-radius-4 cursor-pointer"
           onClick={() => handleCreateTimeline(true)}
         >
           Create new
@@ -235,7 +263,7 @@ function MainSection() {
           <div className="color-text-888888 font-weight-500 small-font-12 text-align-center">
             you haven't made any Timelines yet
           </div>
-          <div className="primary-color-text font-weight-500 small-font-12"
+          <div className="primary-color-text font-weight-500 small-font-12 cursor-pointer"
             onClick={() => handleCreateTimeline(true)}>Create New
           </div>
         </div>
@@ -294,17 +322,17 @@ function MainSection() {
             </div>
           </div>)
       }
-      <div className="timelines-wrapper">
+      <div className={timelineData?.data?.length!==0 ? "timelines-wrapper" :""}>
         {!draftsflag ?
           (timelineDraftlist?.length > 0 &&
-            timelineDraftlist?.map(({ timelineName, createdAt, timelineStartDate, timelineEndDate, _id }, index) => {
+            timelineDraftlist?.map(({ timelineName, createdAt, timelineStartDate, status, timelineEndDate, _id }, index) => {
               return (
                 <div
                   key={_id}
                   className="d-flex align-center justify-between border-radius-4 border-df divider-margin-8"
                 >
                   <div
-                    className="timeline-content-wrapper d-flex justify-flex-start cursor-pointer"
+                    className="timeline-content-wrapper d-flex align-center justify-flex-start cursor-pointer"
                     onClick={() => goToInnerTimeline(_id)}
                   >
                     <div className="width-6">
@@ -314,16 +342,16 @@ function MainSection() {
                         alt="colorTimeline"
                       />
                     </div>
-                    <div className="width-15">{timelineName}</div>
+                    <div className="width-15">{add3dotsItemName(timelineName)}</div>
                     <div className="width-19">{createdAt &&
                       `${createdAt?.substring(8, 10)} ${makeMonthFormat(createdAt?.substring(5, 7
                       ))} ${createdAt?.substring(0, 4)}`}</div>
-                    <div className={`width-25  ${!timelineStartDate ? "padding-left-50 font-weight-500" :""}`}>{timelineStartDate ? `${timelineStartDate?.substring(8, 10)} ${makeMonthFormat(timelineStartDate?.substring(5, 7
-                    ))} ${timelineStartDate?.substring(0, 4)}` : "-"}</div>
-                    <div className={`width-24 ${!timelineEndDate ? "padding-left-50 font-weight-400" :""}`}>{timelineEndDate ? `${timelineEndDate?.substring(8, 10)} ${makeMonthFormat(timelineEndDate?.substring(5, 7
-                    ))} ${timelineEndDate?.substring(0, 4)}` : "-"}</div>
+                    <div className={`width-25  ${!timelineStartDate ? "padding-left-50 font-weight-400" : ""}`}>{timelineStartDate ? `${timelineStartDate?.substring(8, 10)} ${makeMonthFormat(timelineStartDate?.substring(5, 7
+                    ))} ${timelineStartDate?.substring(0, 4)}` : <img style={{ marginLeft: "8px" }} src={longline} alt="longline" />}</div>
+                    <div className={`width-24 ${!timelineEndDate ? "padding-left-50 font-weight-400" : ""}`}>{timelineEndDate ? `${timelineEndDate?.substring(8, 10)} ${makeMonthFormat(timelineEndDate?.substring(5, 7
+                    ))} ${timelineEndDate?.substring(0, 4)}` : <img style={{ marginLeft: "8px" }} src={longline} alt="longline" />}</div>
                     <div className="status-container width-15">
-                      Yet to start
+                      {statusCode[status]}
                     </div>
                   </div>
                   <div className="width-3">
@@ -358,7 +386,7 @@ function MainSection() {
               );
             })) :
           (timelineSentlist?.length > 0 &&
-            timelineSentlist?.map(({ timelineName, createdAt, timelineStartDate, timelineEndDate, _id }, index) => {
+            timelineSentlist?.map(({ timelineName, createdAt, timelineStartDate, timelineEndDate, status, _id }, index) => {
               return (
                 <div
                   key={_id}
@@ -366,7 +394,7 @@ function MainSection() {
                 >
                   <div
                     onClick={() => gotoSharedTimeline(_id)}
-                    className="timeline-content-wrapper d-flex justify-flex-start cursor-pointer"
+                    className="timeline-content-wrapper d-flex align-center justify-flex-start cursor-pointer"
                   // onClick={goToInnerTimeline}
                   >
                     <div className="width-6">
@@ -376,16 +404,16 @@ function MainSection() {
                         alt="colorTimeline"
                       />
                     </div>
-                    <div className="width-15">{timelineName}</div>
+                    <div className="width-15">{add3dotsItemName(timelineName)}</div>
                     <div className="width-19">{createdAt &&
-                      `${createdAt?.substring(8, 10)} ${monthList[createdAt?.substring(5, 7
-                      )]} ${createdAt?.substring(0, 4)}`}</div>
+                      `${createdAt?.substring(8, 10)} ${makeMonthFormat(createdAt?.substring(5, 7
+                      ))} ${createdAt?.substring(0, 4)}`}</div>
                     <div className="width-25">{timelineStartDate ? `${timelineStartDate?.substring(8, 10)} ${makeMonthFormat(timelineStartDate?.substring(5, 7
-                    ))} ${timelineStartDate?.substring(0, 4)}` : "-"}</div>
+                    ))} ${timelineStartDate?.substring(0, 4)}` : <img style={{ marginLeft: "8px" }} src={longline} alt="longline" />}</div>
                     <div className="width-24">{timelineEndDate ? `${timelineEndDate?.substring(8, 10)} ${makeMonthFormat(timelineEndDate?.substring(5, 7
-                    ))} ${timelineEndDate?.substring(0, 4)}` : "-"}</div>
+                    ))} ${timelineEndDate?.substring(0, 4)}` : <img style={{ marginLeft: "8px" }} src={longline} alt="longline" />}</div>
                     <div className="status-container width-15">
-                      Yet to start
+                      {statusCode[status]}
                     </div>
                   </div>
                   <div className="width-3">
@@ -421,7 +449,6 @@ function MainSection() {
 
         }
       </div>
-
     </div>
   );
 }

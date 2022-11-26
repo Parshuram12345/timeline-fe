@@ -21,9 +21,9 @@
 }
 
 .close-icon-mobile {
-    top: 7px;
-    right: 10px;
-    width: 5vw;
+    top: 10px;
+    right: 20px;
+    width: 4vw;
 }
 
 .timeline-input {
@@ -37,7 +37,7 @@
     align-items: center;
     margin: auto;
     position: fixed;
-    background: hsla(0, 0%, 100%, .9);
+    background: #00000050;
     top: 0;
     bottom: 0;
     left: 0;
@@ -47,16 +47,16 @@
 }
 
 .modal-wrapper-create-timeline-mobile {
-    width: 100%;
+    width: 90%;
     border-radius: 4px;
     border: 1px solid #DFDFDF;
-    padding: 20px;
+    padding: 12px;
     background-color: white;
     box-shadow: 0 20px 75px rgba(0 0 0 /13%);
 }
 
-.modal-wrapper-create-delete-timeline-mobile {
-    width: 80%;
+.modal-wrapper-delete-timeline-mobile {
+    width: 84%;
     border-radius: 4px;
     border: 1px solid #DFDFDF;
     padding: 20px;
@@ -82,6 +82,23 @@
     color: #000000;
     font-size: 14px;
     font-weight: 500;
+}
+.ui.button.yes-btn {
+    border: 1px solid #3B5998;
+    color: #888;
+    font-size: 12px;
+    background: #ffffff;
+    border-radius: 4px;
+}
+
+.ui.button.no-btn {
+    margin-left: 3%;
+    font-weight: 300;
+    border: 1px solid #3B5998;
+    background: #3B5998;
+    color: #ffffff;
+    font-size: 12px;
+    border-radius: 4px;
 }
 
 .drafts-tab {
@@ -112,7 +129,9 @@
     color: #DFDFDF;
     font-size: 20px;
 }
-
+.margin-top-8{
+    margin-left: 8px;
+}
 .margin-left-4 {
     margin-left: 4px;
 }
@@ -120,6 +139,7 @@
 .margin-left-5 {
     margin-left: 5%
 }
+
 
 .min-width-62 {
     min-width: 62%;

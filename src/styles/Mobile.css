@@ -21,7 +21,7 @@
     width:20%
 }
 .rightside-section{
-        width: 80%;
+        width: 77vw;
         height: 90vh;
         top:10vh
 }
@@ -237,4 +237,21 @@ input:focus {
 }
 .margin-right-5{
     margin-right: 5px;
+}
+.main-modal-wrapper-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    position: fixed;
+    background: #00000050;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    height: 100vh;
+}
+.overflow-y{
+    overflow-y: auto;
 }

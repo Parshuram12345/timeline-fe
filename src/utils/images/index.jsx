@@ -14,6 +14,10 @@ import Ellipse_bg from "../../Images/Ellipse.svg"
 import crossCloseIcon from "../../Images/crosscloseicon.svg";
 import minusCircelOutline from "../../Images/minuscircleoutline.svg";
 import downEmptyarrow from "../../Images/downArrowIcon.svg";
+import additemMobile from "../../Images/additemMobile.svg";
+import backArrow  from  "../../Images/backarrowicon.svg";
+import fullDots from "../../Images/fulldots.svg";
+import longline from "../../Images/longline.svg"
 
 export const imageslist ={
     addItem,
@@ -31,5 +35,9 @@ export const imageslist ={
     crossCloseIcon,
     Ellipse_bg,
     minusCircelOutline,
-    downEmptyarrow
+    downEmptyarrow,
+    additemMobile,
+    backArrow,
+    fullDots,
+    longline
 }

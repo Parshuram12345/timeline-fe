@@ -1,31 +1,29 @@
 import React, { useRef, useState, useEffect } from "react";
 import "./InnerTimeline.css";
-import { HiOutlineShare, HiOutlineMinusCircle } from "react-icons/hi";
-import { AiOutlineDelete, AiFillCaretDown } from "react-icons/ai";
-import { FiChevronRight, FiEdit2 } from "react-icons/fi";
-import { Dropdown } from "react-bootstrap";
+import { FiChevronRight } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import { imageslist } from "./../../../utils/images";
 import { useDispatch, useSelector } from "react-redux";
+import { data } from "../../../utils";
 import axios from "axios";
-import { BaseUrl } from "../../../utils/static/timelineConfig";
-import { data } from "../../../utils"
 import { getTimelineItems, deleteTimelineItem, addEditItems, getTimelinedata, createTimelineData } from "../../../Redux/Actions/timelineAction";
+
+import Demo from "../GanttChart/GhanttChart";
 function InnerTimeline() {
   const { timelineId } = useParams()
-  // console.log(timelineid)
+  // console.log(timelineId)
+  const { BaseUrl, AccessToken } = data;
   const dispatch = useDispatch()
   const [itemsflag, setItemsflag] = useState(false);
   const [ghanttflag, setGhanttflag] = useState(false);
-  const [editUpdate, setEditUpdate] = useState(false)
   const [readonlystatus, setReadonlyStatus] = useState(false);
   const [draftIds, setDraftIds] = useState([])
   const dragItem = useRef();
   const dragOverItem = useRef();
   const [timelineName, setTimelineName] = useState({})
   const [hoverEffect, setHoverEffect] = useState("")
+  const [designerName, setDesignerName] = useState("")
   const [timelineItems, setTimelineItems] = useState([])
-  const [timelineSentItems, setTimelineSentItems] = useState([])
   const [listitem, setListitem] = useState([
     {
       itemIndex: 0,
@@ -74,29 +72,22 @@ function InnerTimeline() {
     }
   ]);
   const [shared, setShared] = useState(false);
-  const [openUpdate, setOpenUpdate] = useState(false) ///---read only item status
-  const [editItem, setEditItem] = useState(false) ///---edit item status
   const [start, setStart] = useState("")
   const [end, setEnd] = useState("")
   const [days, setDays] = useState("")
   const appState = useSelector((state) => state.timelineReducer)
   const { timelineData, timelineItem } = appState;
   // console.log(timelineItem?.data?.timelineItems)
-  let dummyarr = Array.from({ length: 5 })
   const {
-    lineVertical,
     hash,
-    threeDots,
-    searchIcon,
     addItem,
     addMoreItem,
-    crossCloseIcon,
     minusCircelOutline,
     downEmptyarrow,
   } = imageslist;
   const navigate = useNavigate();
 
-  const { BaseUrl, AccessToken, projectId, } = data
+  const { projectId, } = data
   const handleItemsDocs = () => {
     setItemsflag(false);
     setGhanttflag(true);
@@ -158,7 +149,7 @@ function InnerTimeline() {
   function getEndDate() {
     if (timelineItems.length === 0) {
       for (let i = 0; i < listitem.length; i++) {
-        if (listitem[i].startDate && listitem[i].days) {
+        if (listitem[i].startDate && listitem[i].days && +listitem[i].days < 61) {
           let startdate = new Date(listitem[i].startDate)
           let updatedEndDate = startdate.setDate(startdate.getDate() + +listitem[i].days)
           console.log(updatedEndDate)
@@ -166,7 +157,7 @@ function InnerTimeline() {
             ...newState[i], ["endDate"]: new Date(updatedEndDate)?.toISOString()?.substring(0, 10)
           };
         }
-        else if (!listitem[i].days) {
+        else if (!listitem[i].days || listitem[i].days > 61) {
           newState[i] = {
             ...newState[i], ["endDate"]: ""
           };
@@ -177,14 +168,14 @@ function InnerTimeline() {
     else {
       let items = [...timelineItems]
       for (let i = 0; i < timelineItems.length; i++) {
-        if (timelineItems[i].startDate && timelineItems[i].days) {
+        if (timelineItems[i].startDate && timelineItems[i].days && +timelineItems[i].days < 61) {
           let startdate = new Date(timelineItems[i].startDate)
           let updatedEndDate = startdate.setDate(startdate.getDate() + +timelineItems[i].days)
           items[i] = {
             ...items[i], ["endDate"]: new Date(updatedEndDate)?.toISOString().substring(0, 10)
           }
         }
-        else if (!timelineItems[i].days) {
+        else if (!timelineItems[i].days || +timelineItems[i].days > 61) {
           items[i] = {
             ...items[i], ["endDate"]: ""
           };
@@ -201,7 +192,6 @@ function InnerTimeline() {
       updatedUnix = new Date(value).getTime()
       setStart(updatedUnix)
     }
-    console.log(newState)
     if (name === "endDate") {
       currentUnix = new Date(value).getTime();
       setEnd(currentUnix)
@@ -296,7 +286,6 @@ function InnerTimeline() {
   ///----add moreItem  for already made draft with onclick button---//
   const addMoreListItemForDraft = () => {
     let items = [...timelineItems]
-    console.log(timelineItems)
     items.push({
       itemIndex: items.length,
       itemName: "",
@@ -308,22 +297,31 @@ function InnerTimeline() {
     })
     setTimelineItems(items)
   }
+  // console.log(timelineItems)
   ///----reduce the list Item with onclick button---//
   const reduceListItem = (index) => {
-    if (listitem.length > 1) {
-      setListitem(listitem?.filter((_, i) => i !== index))
+    if (timelineItems?.length === 0) {
+      if (listitem.length > 1) {
+        setListitem(listitem?.filter((_, i) => i !== index))
+      }
+    }
+    else {
+      setTimelineItems(timelineItems?.filter((_, i) => i !== index))
     }
   }
 
   ////----get the minimum start date and maximum end date 
-  function getMinMaxDateTimeline(minDate, maxDate) {
-    const bodydata = {
-      id: timelineId,
-      isDraft: false,
-      timelineStartDate: new Date(Math.min(...minDate)).toISOString().substring(0, 10),
-      timelineEndDate: new Date(Math.max(...maxDate)).toISOString().substring(0, 10),
+  function getMinMaxDateTimeline(minDate, maxDate, trued) {
+    console.log(minDate, maxDate)
+    if (minDate.length !== 0 || minDate.length !== 0) {
+      const bodydata = {
+        id: timelineId,
+        isDraft: trued ? false : true,
+        timelineStartDate: new Date(Math.min(...minDate))?.toISOString()?.substring(0, 10),
+        timelineEndDate: new Date(Math.max(...maxDate))?.toISOString()?.substring(0, 10),
+      }
+      dispatch(createTimelineData(bodydata, projectId))
     }
-    dispatch(createTimelineData(bodydata, projectId))
   }
 
 
@@ -333,7 +331,7 @@ function InnerTimeline() {
     let allEndDate = [];
     if (timelineItems.length === 0) {
       for (let i = 0; i < listitem.length; i++) {
-        if (listitem[i].itemName !== "" && listitem[i].startDate !== "" && listitem[i].days !== "" && listitem[i].endDate !== "" && listitem[i].remarks.length !== 0) {
+        if (listitem[i].itemName && listitem[i].startDate && listitem[i].days && listitem[i].endDate && listitem[i].remarks.length !== 0) {
           let bodydata = {
             isDraft: false,
             timelineId: timelineId,
@@ -348,57 +346,61 @@ function InnerTimeline() {
           allStartDate.push(new Date(listitem[i].startDate))
           allEndDate.push(new Date(listitem[i].endDate))
           dispatch(addEditItems(timelineId, bodydata))
+
         }
+       
       }
       ///---collect the date from timeline item----///
-      if (allStartDate && allEndDate) {
-        getMinMaxDateTimeline(allStartDate, allEndDate)
+      if (!allStartDate.includes("Invalid Date") && !allEndDate.includes("Invalid Date")) {
+        getMinMaxDateTimeline(allStartDate, allEndDate, "true")
       }
-      navigate(`/sharedtimeline/${timelineId}`)
+      navigate(`/`)
     }
     else {
       for (let i = 0; i < timelineItems.length; i++) {
-        if (timelineItems[i].itemName !== "" && timelineItems[i].startDate !== "" && timelineItems[i].days !== "" && timelineItems[i].endDate !== "" && timelineItems[i].remarks.length !== 0) {
-          let bodydata = {
-            timelineId: timelineId,
-            id: timelineItems[i]._id,
-            itemIndex: i,
-            isDraft: false,
-            itemName: timelineItems[i].itemName,
-            startDate: timelineItems[i].startDate,
-            days: timelineItems[i].days,
-            endDate: timelineItems[i].endDate,
-            status: timelineItems[i].status,
-            remarks: timelineItems[i].remarks && timelineItems[i].remarks[0],
+        if (draftIds.includes(timelineItems[i]._id)) {
+          if (timelineItems[i].itemName !== "" && timelineItems[i].startDate !== "" && timelineItems[i].days !== "" && timelineItems[i].endDate !== "" && timelineItems[i].remarks.length !== 0) {
+            let bodydata = {
+              timelineId: timelineId,
+              id: timelineItems[i]._id,
+              itemIndex: i,
+              isDraft: false,
+              itemName: timelineItems[i].itemName,
+              startDate: timelineItems[i].startDate,
+              days: timelineItems[i].days,
+              endDate: timelineItems[i].endDate,
+              status: timelineItems[i].status,
+              remarks: timelineItems[i].remarks[timelineItems[i].remarks.length - 1],
+            }
+            allStartDate.push(new Date(timelineItems[i].startDate))
+            allEndDate.push(new Date(timelineItems[i].endDate))
+            dispatch(addEditItems(timelineId, bodydata))
           }
-          allStartDate.push(new Date(timelineItems[i].startDate))
-          allEndDate.push(new Date(timelineItems[i].endDate))
-          dispatch(addEditItems(timelineId, bodydata))
         }
       }
-
-      getMinMaxDateTimeline(allStartDate, allEndDate)
-      navigate(`/sharedtimeline/${timelineId}`)
+      getMinMaxDateTimeline(allStartDate, allEndDate, "true")
+      navigate(`/`)
     }
   }
 
 
 
-  // console.log(timelineItems)
+  console.log(timelineItems)
   ///-----add (darft) the timeline list item------////
   const handleSaveDraft = () => {
     let allStartDate = [];
     let allEndDate = [];
     if (timelineItems.length === 0) {
       for (let i = 0; i < listitem.length; i++) {
-        if (listitem[i].itemName !== "" && listitem[i].startDate !== "" && listitem[i].days !== "" && listitem[i].endDate !== "" && listitem[i].remarks.length !== 0) {
+        if (listitem[i].itemName && listitem[i].remarks.length !== 0) {
+          console.log(listitem[i].remarks)
           let bodydata = {
             timelineId: timelineId,
             itemIndex: i,
             itemName: listitem[i].itemName,
-            startDate: listitem[i].startDate,
-            days: listitem[i].days,
-            endDate: listitem[i].endDate,
+            startDate: listitem[i].startDate && listitem[i].startDate,
+            days: listitem[i].days && listitem[i].days,
+            endDate: listitem[i].endDate && listitem[i].endDate,
             status: listitem[i].status,
             remarks: listitem[i].remarks,
           }
@@ -406,86 +408,147 @@ function InnerTimeline() {
           allEndDate.push(new Date(listitem[i].endDate))
           dispatch(addEditItems(timelineId, bodydata))
         }
+        else if (listitem[i].itemName && listitem[i].remarks.length === 0) {
+          let bodydata = {
+            timelineId: timelineId,
+            itemIndex: i,
+            startDate: listitem[i].startDate && listitem[i].startDate,
+            days: listitem[i].days && listitem[i].days,
+            endDate: listitem[i].endDate && listitem[i].endDate,
+            status: listitem[i].status,
+            itemName: listitem[i].itemName
+          }
+          dispatch(addEditItems(timelineId, bodydata))
+        }
       }
       ///---collect the date from timeline item----///
-      if (allStartDate && allEndDate) {
+      if (!allStartDate.includes("Invalid Date") && !allEndDate.includes("Invalid Date") && allStartDate.length !== 0 || allEndDate.length !== 0) {
         getMinMaxDateTimeline(allStartDate, allEndDate)
+
       }
-      navigate(`/innertimeline/${timelineId}`)
+      navigate(`/`)
     } else {
       for (let i = 0; i < timelineItems.length; i++) {
-        if (timelineItems[i].itemName !== "" && timelineItems[i].startDate !== "" && timelineItems[i].days !== "" && timelineItems[i].endDate !== "" && timelineItems[i].remarks.length !== 0) {
-          if (draftIds.includes(timelineItems[i]._id)) {
+        if (draftIds.includes(timelineItems[i]._id)) {
+          console.log(timelineItems[i].remarks[0])
+          if (timelineItems[i].itemName && timelineItems[i].remarks.length !== 0) {
             let bodydata = {
               timelineId: timelineId,
               id: timelineItems[i]._id,
               itemIndex: i,
               itemName: timelineItems[i].itemName,
-              startDate: timelineItems[i].startDate,
-              days: timelineItems[i].days,
-              endDate: timelineItems[i].endDate,
+              startDate: timelineItems[i].startDate && timelineItems[i].startDate,
+              days: timelineItems[i].days && timelineItems[i].days,
+              endDate: timelineItems[i].endDate && timelineItems[i].endDate,
               status: timelineItems[i].status,
-              remarks: timelineItems[i].remarks[0],
+              remarks: timelineItems[i].remarks,
             }
             allStartDate.push(new Date(timelineItems[i].startDate))
             allEndDate.push(new Date(timelineItems[i].endDate))
             dispatch(addEditItems(timelineId, bodydata))
+            navigate(`/`)
           }
-          else {
+          else if (timelineItems[i].itemName && timelineItems[i].remarks.length === 0) {
+            let bodydata = {
+              timelineId: timelineId,
+              id: timelineItems[i]._id,
+              itemIndex: i,
+              itemName: timelineItems[i].itemName,
+              startDate: timelineItems[i].startDate && timelineItems[i].startDate,
+              days: timelineItems[i].days && timelineItems[i].days,
+              endDate: timelineItems[i].endDate && timelineItems[i].endDate,
+              status: timelineItems[i].status,
+            }
+            dispatch(addEditItems(timelineId, bodydata))
+            navigate(`/`)
+          }
+         
+          allStartDate.push(new Date(timelineItems[i].startDate))
+          allEndDate.push(new Date(timelineItems[i].endDate))
+        }
+        else {
+          if (timelineItems[i].itemName && timelineItems[i].remarks.length !== 0) {
             let bodydata = {
               timelineId: timelineId,
               itemIndex: i,
               itemName: timelineItems[i].itemName,
-              startDate: timelineItems[i].startDate,
-              days: timelineItems[i].days,
-              endDate: timelineItems[i].endDate,
+              startDate: timelineItems[i].startDate && timelineItems[i].startDate,
+              days: timelineItems[i].days && timelineItems[i].days,
+              endDate: timelineItems[i].endDate && timelineItems[i].endDate,
               status: timelineItems[i].status,
               remarks: timelineItems[i].remarks,
+            }
+            allStartDate.push(new Date(timelineItems[i].startDate))
+            allEndDate.push(new Date(timelineItems[i].endDate))
+            dispatch(addEditItems(timelineId, bodydata))
+            navigate(`/`)
+          }
+          else if (timelineItems[i].itemName && timelineItems[i].remarks.length === 0) {
+            console.log(timelineItems[i].endDate)
+            let bodydata = {
+              timelineId: timelineId,
+              itemIndex: i,
+              itemName: timelineItems[i].itemName,
+              startDate: timelineItems[i].startDate && timelineItems[i].startDate,
+              days: timelineItems[i].days && timelineItems[i].days,
+              endDate: timelineItems[i].endDate && timelineItems[i].endDate,
+              status: timelineItems[i].status,
             }
             dispatch(addEditItems(timelineId, bodydata))
           }
           allStartDate.push(new Date(timelineItems[i].startDate))
           allEndDate.push(new Date(timelineItems[i].endDate))
         }
+        console.log(allStartDate, allEndDate)
         ///---collect the date from timeline item----///
-        if (allStartDate && allEndDate)
+        if (!allStartDate.includes("Invalid Date") && !allEndDate.includes("Invalid Date") && allStartDate.length !== 0 || allEndDate.length !== 0)
           getMinMaxDateTimeline(allStartDate, allEndDate)
       }
-
     }
-    navigate(`/innertimeline/${timelineId}`)
+    navigate(`/`)
+  }
+
+  ///---get designer project ---////
+  async function getClientProject(projectId) {
+    return await axios.get(
+      `${BaseUrl}/api/projects/getProjects?projectId=${projectId}`,
+      {
+        headers: {
+          Authorization: AccessToken,
+        }
+      }
+    );
   }
 
   useEffect(() => {
     dispatch(getTimelineItems(timelineId))
     dispatch(getTimelinedata(projectId))
+    //---get designer name from client data----///
+    getClientProject(projectId)
+      .then((res) => {
+        setDesignerName(res.data.projects[0].name)
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, [])
 
   useEffect(() => {
     ///----get timelineitem---///
     setTimelineItems(timelineItem?.data?.items?.filter(({ isDraft }) => isDraft === true))
-    setTimelineSentItems(timelineItem?.data?.items?.filter(({ isDraft }) => isDraft === false))
     setDraftIds(timelineItem?.data?.items?.map(({ _id }) => _id))
-
 
     ///---get timelinedata -----///
     setTimelineName(timelineData?.data?.find(({ _id }) => _id === timelineId))
   }, [timelineItem, timelineData])
 
-  // const openReadUpdateModal = (value) => {
-  //   setOpenUpdate(value)
-  // }
-  // const openEditItemModal = (value) => {
-  //   if (value) {
-  //     setOpenUpdate(false)
-  //   }
-  //   setEditItem(value)
-  // }
+
+  console.log(listitem[0].remarks)
   return (
     <div className="innertimeline-wrapper">
       <div className="d-flex align-center justify-between width-fit-content divider-margin">
         <div className="small-font-12 color-text-888888">
-          Ashok rathi residence
+          {designerName}
         </div>
         <span className="d-flex align-center color-text-888888 font-size-14">
           <FiChevronRight />
@@ -508,13 +571,13 @@ function InnerTimeline() {
         <div className="timeline-head font-weight-500"> {timelineName?.timelineName}</div>
         <div style={{ width: "19rem" }} className="draft-share-btn-wrapper d-flex align-center justify-between">
           <div
-            className="save-btn-web small-font-12 font-weight-400 text-align-center border-radius-4"
+            className="save-btn-web small-font-12 font-weight-400 text-align-center border-radius-4 cursor-pointer"
             onClick={() => handleSaveDraft()}
           >
             Save as Draft
           </div>
           <div
-            className="submit-btn-web small-font-12 font-weight-400 text-align-center bg-color border-radius-4"
+            className="submit-btn-web small-font-12 font-weight-400 text-align-center bg-color border-radius-4 cursor-pointer"
             onClick={() => handleSharedTimelineItem()}
           >
             Share
@@ -538,9 +601,10 @@ function InnerTimeline() {
             Gantt View
           </div>
         </div>
-        {!shared && <div className="d-flex justify-between align-center width-25">
+
+        {!shared && <div style={{ width: "16vw" }} className="d-flex justify-between align-center">
           <div onClick={() => {
-            if (timelineItems.length === 0) {
+            if (timelineItems?.length === 0) {
               addMoreListItem()
             }
             else {
@@ -549,41 +613,11 @@ function InnerTimeline() {
           }}>
             <img className="add-item cursor-pointer" src={addItem} alt="add-item" />
           </div>
-          <div>
-            <img className="search-icon" src={searchIcon} alt="search-icon" />
-          </div>
-          <div className="width-30">
-            <Dropdown>
-              <Dropdown.Toggle
-                as="button"
-                style={{
-                  border: "none",
-                  backgroundColor: "#ffffff",
-                }}
-              >
-                <img src={threeDots} alt="threedots" />
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item>
-                  <HiOutlineShare className="share-icon" />
-                  Share
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <FiEdit2 className="share-icon" />
-                  Edit
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <AiOutlineDelete className="share-icon" />
-                  Delete
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
         </div>
         }
       </div>
       <div style={{ marginTop: "0%" }} className="ui divider"></div>
-      <div className="timelineItems-wrapper d-flex justify-flex-start color-text-444444 font-weight-400">
+      {!itemsflag && <div className="timelineItems-wrapper d-flex justify-flex-start color-text-444444 font-weight-400">
         <div style={{ width: "3.5%" }} className=""></div>
         <div className="width-10 small-font-12">Items</div>
         <div className="width-3"></div>
@@ -597,9 +631,9 @@ function InnerTimeline() {
         <div className="width-10"></div>
         <div className="width-14 small-font-12">Remark</div>
         <div className="width-5"></div>
-      </div>
-      <div style={{ borderRadius: "12px", padding: "8px 0" }} className="border-df height-63">
-        <div style={{ maxHeight: "56vh" }} className="overflow-y">
+      </div>}
+      {!itemsflag && <div style={{ borderRadius: "12px", padding: "8px 0" }} className="border-df height-63 overflow-y">
+        <div>
           {
             (timelineItems?.length === 0 ? listitem : timelineItems)?.map(({ itemName, startDate, endDate, days, remarks, _id }, index) => {
               return (
@@ -645,7 +679,6 @@ function InnerTimeline() {
                       <input
                         type="number"
                         name="days"
-                        max="9999"
                         onChange={(e) => handleChange(e, index)}
                         value={days}
                         className="border-df bg-color-fa border-radius-4 text-align-center width-100 padding-3"
@@ -696,9 +729,17 @@ function InnerTimeline() {
                         reduceListItem(index)
                       }
                       else {
+                        if (_id) {
+                          console.log("delete item", _id)
+                          dispatch(deleteTimelineItem(_id, timelineId))
+                          // if(timelineItems?.length===1){
+                          // window.location.reload(false)
+                          // }
+                        }
+                        else {
+                          reduceListItem(index)
+                        }
                         navigate(`/innertimeline/${timelineId}`)
-                        dispatch(deleteTimelineItem(_id, timelineId))
-                        window.location.reload(false)
                       }
                     }
                     } className={`width-5 text-align-center ${hoverEffect === `img_${index + 1}` ? "minus-icon-wrapper" : "visiblity-none"}`}>
@@ -712,7 +753,7 @@ function InnerTimeline() {
           }
         </div>
         <div style={{ marginLeft: "3%" }} onClick={() => {
-          if (timelineItems.length === 0) {
+          if (timelineItems?.length === 0) {
             addMoreListItem()
           }
           else {
@@ -721,44 +762,11 @@ function InnerTimeline() {
         }} className="cursor-pointer">
           <img className="add-more-item" src={addMoreItem} alt="add-more-item" />
         </div>
-      </div>
-      {/* ////----shared timeline item -----//// */}
-      {shared && <div style={{ padding: "8px 0" }} className="">
-        <div className="d-flex justify-between align-center timeline-item-search-wrapper bg-color-ff">
-          <div style={{ marginLeft: "32px" }}>
-            Timeline
-          </div>
-          <div className="d-flex justify-between align-center width-15">
-            <img className="search-icon" src={searchIcon} alt="search_item" />
-            <Dropdown style={{ marginRight: "40%" }} className="width-5">
-              <Dropdown.Toggle
-                as="button"
-                style={{
-                  border: "none",
-                  backgroundColor: "#ffffff",
-                }}
-              >
-                <img src={threeDots} alt="threedots" />
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item>
-                  <HiOutlineShare className="share-icon" />
-                  Share
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <FiEdit2 className="share-icon" />
-                  Edit
-                </Dropdown.Item>
-                <Dropdown.Item>
-                  <AiOutlineDelete className="share-icon" />
-                  Delete
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-        </div>
       </div>}
-
+      {itemsflag && <div className="border-df border-radius-4 height-65 overflow-y">
+        <Demo timelineItems={timelineItems} />
+      </div>
+      }
 
       {/* /// not updating anything item */}
       {/* <div className="main-modal-wrapper">

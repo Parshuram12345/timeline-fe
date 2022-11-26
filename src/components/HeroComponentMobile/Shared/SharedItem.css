@@ -108,12 +108,22 @@
     margin-left: 10px;
     margin-top: 30px;
 }
-.ui.button.submit-btn-additem{
+.ui.button.submit-btn-updateitem{
     font-weight: 300;
     background: #3B5998;
     color: #ffffff;
     padding: 13px 32px;
     font-size: 14px;
+    border-radius: 4px;
+    width: 100%;
+}
+.ui.button.submit-btn-readitem{
+    font-weight: 300;
+    color: #3B5998;
+    background: #ffffff;
+    padding: 13px 32px;
+    font-size: 14px;
+    border: 1px solid #3B5998;
     border-radius: 4px;
     width: 100%;
 }
